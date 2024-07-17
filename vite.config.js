@@ -56,7 +56,7 @@ const pageData = {
           messagePreview: 'Изображение',
           date: '10:49',
           unreadMessages: '2',
-          isActive: true,
+          isActive: false,
         },
         {
           image: 'https://site.iskandarov.kz/storage/uploads/2024/07/15/2_uid_669513d93a8d7.png',
@@ -64,7 +64,7 @@ const pageData = {
           messagePreview: '<span style="color: black;">Вы:</span> Огонь',
           date: '09:55',
           unreadMessages: null,
-          isActive: false,
+          isActive: true,
         },
         {
           image: 'https://site.iskandarov.kz/storage/uploads/2024/07/15/3_uid_669513da47b86.png',
@@ -117,6 +117,7 @@ const pageData = {
     },
     '/pages/profile-change-data/index.html': {
       title: 'Редактировать информацию о пользователе',
+      userName: 'Тимур',
       userAvatar: 'https://site.iskandarov.kz/storage/uploads/2024/07/15/timur-avatar_uid_6695699e4ab9d.jpg',
       userInfoFields: [
         {
@@ -177,6 +178,7 @@ const pageData = {
     },
     '/pages/profile-change-password/index.html': {
       title: 'Изменить пароль',
+      userName: 'Тимур',
       userAvatar: 'https://site.iskandarov.kz/storage/uploads/2024/07/15/timur-avatar_uid_6695699e4ab9d.jpg',
     },
     '/pages/error-not-found/index.html': {

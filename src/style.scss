@@ -7,7 +7,7 @@
 }
 
 .work-card {
-    background-color: #fff;
+    background-color: var(--white-color);
     margin: auto;
     width: 100%;
     max-width: 600px;
@@ -36,7 +36,7 @@
     }
 
     &__link {
-        color: rgb(0, 160, 227);
+        color: var(--primary-color);
         text-decoration: none;
     }
 }

@@ -9,7 +9,7 @@
 <body>
 
     <div class="page-wrapper messenger-page__wrapper">
-        <div class="messenger__layout main-layout">
+        <main class="messenger__layout main-layout">
             <div class="main-layout__sidebar">
                 <div class="chats">
                     <div class="chats__header">
@@ -17,7 +17,7 @@
                             <span>{{title}}</span>
                             <a href="/pages/profile/index.html">
                                 Профиль
-                                <svg class="svg-icon" style="height: 10px;">
+                                <svg class="svg-icon" style="height: 10px; width: 5px">
                                     <use xlink:href="/assets/icons.svg#arrow-right"></use>
                                 </svg>
                             </a>
@@ -81,12 +81,18 @@
                                 Хассельблад в итоге адаптировал SWC для космоса, но что-то пошло не так и на ракету они 
                                 так никогда и не попали. Всего их было произведено 25 штук, одну из них недавно продали 
                                 на аукционе за 45000 евро.
+                                <span class="user-message__time">09:00</span>
                             </div>
                             <div class="chat-history__message user-message user-message--left">
-                                <img src="https://site.iskandarov.kz/storage/uploads/2024/07/15/message-image_uid_669513daaa702.jpg"/>
+                                <img 
+                                    src="https://site.iskandarov.kz/storage/uploads/2024/07/15/message-image_uid_669513daaa702.jpg" 
+                                    alt="Изображение от пользователя Андрей"
+                                />
+                                <span class="user-message__time">09:22</span>
                             </div>
                             <div class="chat-history__message user-message user-message--right">
                                 Огонь 🔥🔥
+                                <span class="user-message__time">09:55</span>
                             </div>
                         </div>
                     </div>
@@ -133,7 +139,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
 </body>
 </html>

@@ -7,10 +7,10 @@
     <script type="module" src="./index.js"></script>
 </head>
 <body>
-    <div class="page-wrapper sign-up-page__wrapper">
-        <form class="sign-up-page__form sign-up-form">
-            <div class="sign-up-form__title">{{ title }}</div>
-            <div class="sign-up-form__fields">
+    <main class="page-wrapper sign-up-page__wrapper">
+        <form class="sign-up-page__form auth-form">
+            <div class="auth-form__title">{{ title }}</div>
+            <div class="auth-form__fields">
                 {{> form-group 
                     label="Email" 
                     id="email" 
@@ -56,6 +56,6 @@
                 </div>
             </div>
         </form>
-    </div>
+    </main>
 </body>
 </html>

@@ -1,6 +1,6 @@
 .profile-page {
     &__wrapper {
-        background-color: #fff;
+        background-color: var(--white-color);
     }
 }
 
@@ -31,58 +31,8 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        color: #999999;
+        color: var(--gray-color-lighten);
         text-decoration: none;
-    }
-}
-
-
-.user-avatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 130px;
-    height: 130px;
-    cursor: pointer;
-    overflow: hidden;
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border-radius: 50%;
-
-    &::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        opacity: 0;
-        transition: opacity .18s;
-    }
-
-    &:hover {
-        &::before {
-            opacity: 1;
-        }
-
-        .user-avatar__label {
-            opacity: 1;
-        }
-    }
-
-    &__label {
-        position: relative;
-        opacity: 0;
-        padding: 0 20px;
-        text-align: center;
-        font-size: 13px;
-        color: #fff;
-        transition: opacity .18s;
-        user-select: none;
     }
 }
 

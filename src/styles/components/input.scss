@@ -7,6 +7,6 @@
     outline: none;
 
     &--error {
-        border-color: #EB3333;
+        border-color: var(--error-color);
     }
 }
