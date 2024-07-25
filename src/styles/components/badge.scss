@@ -1,0 +1,21 @@
+.badge {
+    position: relative;
+    display: inline-block;
+    padding: 4px;
+    border-radius: 4px;
+    background: var(--gray-color);
+    color: var(--white-color);
+    line-height: 1;
+    font-size: 9px;
+
+    &--primary {
+        background-color: var(--primary-color);
+        color: var(--white-color);
+    }
+
+    &--round {
+        min-width: 17px;
+        text-align: center;
+        border-radius: 50%;
+    }
+}
