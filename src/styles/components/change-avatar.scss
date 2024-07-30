@@ -14,13 +14,21 @@
         height: 100%;
     }
 
+    &__label {
+        position: absolute;
+        opacity: 0;
+        padding: 0 20px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--white-color);
+        transition: opacity .18s;
+        user-select: none;
+    }
+
     &::before {
         content: '';
         position: absolute;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
+        inset: 0;
         background: var(--black-color);
         opacity: 0;
         transition: opacity .18s;
@@ -31,19 +39,9 @@
             opacity: .5;
         }
 
+        /* stylelint-disable-next-line selector-class-pattern */
         .user-avatar__label {
             opacity: 1;
         }
-    }
-
-    &__label {
-        position: absolute;
-        opacity: 0;
-        padding: 0 20px;
-        text-align: center;
-        font-size: 13px;
-        color: var(--white-color);
-        transition: opacity .18s;
-        user-select: none;
     }
 }

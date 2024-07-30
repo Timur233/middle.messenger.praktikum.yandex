@@ -14,8 +14,8 @@ module.exports = {
         ],
         'import/no-unresolved': [
             2,
-            { 'caseSensitive': false }
-         ],
+            { caseSensitive: false },
+        ],
         'key-spacing':     ['error', { align: 'value' }],
         'no-multi-spaces': [
             'error',

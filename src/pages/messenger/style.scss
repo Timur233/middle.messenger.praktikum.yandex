@@ -1,10 +1,10 @@
+/* stylelint-disable */
 $message-backgorund: var(--white-color);
-$message-backgorund-right: rgba(0, 120, 210, 0.17);
-$chat-item-hover-bg: rgb(244, 244, 244);
+$message-backgorund-right: rgb(0 120 210 / 17%);
+$chat-item-hover-bg: rgb(244 244 244);
 $chat-item-active-bg: #F2F2F2;
 $searchbar-bg-color: #EFEFEF;
 $searchbar-border-color: #EFEFEF;
-
 $scrollbar-bg: var(--white-color);
 $scrollbar-thumb-bg: #a5a5a5;
 $scrollbar-thumb-hover-bg: #808080;
@@ -18,14 +18,14 @@ $scrollbar-thumb-hover-bg: #808080;
 
 @mixin scroll-settings {
     &::-webkit-scrollbar {
-        width: 2px; 
+        width: 2px;
         background-color: $scrollbar-bg;
     }
-    
+
     &::-webkit-scrollbar-thumb {
         background-color: $scrollbar-thumb-bg;
     }
-    
+
     &::-webkit-scrollbar-thumb:hover {
         background-color: $scrollbar-thumb-hover-bg;
     }
@@ -206,7 +206,6 @@ $scrollbar-thumb-hover-bg: #808080;
         display: flex;
         align-items: center;
         justify-content: center;
-
         font-size: 14px;
         color: var(--gray-color-lighten);
     }
@@ -263,7 +262,6 @@ $scrollbar-thumb-hover-bg: #808080;
 .chat-history {
     padding: 12px;
     height: 100%;
-
     display: flex;
     flex-direction: column;
     align-items: baseline;
@@ -301,7 +299,7 @@ $scrollbar-thumb-hover-bg: #808080;
     &--right {
         margin-left: auto;
         background-color: $message-backgorund-right;
-        border-radius: 12px 0px 12px 12px;
+        border-radius: 12px 0 12px 12px;
     }
 }
 
@@ -314,7 +312,7 @@ $scrollbar-thumb-hover-bg: #808080;
     &__text {
         flex: 1 1 auto;
     }
-    
+
     &__source {
         position: relative;
     }

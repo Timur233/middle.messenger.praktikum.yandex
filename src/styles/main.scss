@@ -1,12 +1,11 @@
-@import url("./reset.scss");
-@import url("./vars.scss");
-@import url("./default.scss");
-
-@import url("./components/badge.scss");
-@import url("./components/button.scss");
-@import url("./components/input.scss");
-@import url("./components/form-group.scss");
-@import url("./components/main-layout.scss");
-@import url("./components/error-message.scss");
-@import url("./components/auth-form.scss");
-@import url("./components/change-avatar.scss");
+@import "./reset";
+@import "./vars";
+@import "./default";
+@import "./components/badge";
+@import "./components/button";
+@import "./components/input";
+@import "./components/form-group";
+@import "./components/main-layout";
+@import "./components/error-message";
+@import "./components/auth-form";
+@import "./components/change-avatar";
