@@ -1,33 +1,54 @@
 import './styles/main.scss';
 import './style.scss';
+import Button from './components/button/button.ts';
+import Form from './components/form/form.ts';
+import Component from './services/Component.ts';
 
-class Test {
-    _test = 1;
+function render(query: string, block: Component) {
+    const root = document.querySelector(query);
 
-    state: {
-        a: number;
-        abs: number;
-    };
+    if (root instanceof HTMLElement) root.appendChild(block.getContent());
 
-    a: number;
-
-    constructor() {
-        this._test = 2;
-        this.state = {
-            a:   1,
-            abs: 2,
-        };
-
-        this.a = 0;
-
-        this.test();
-    }
-
-    test():number {
-        this.a = 2;
-
-        return this.a;
-    }
+    return root;
 }
 
-export default Test;
+const button = new Button({
+    classList: 'button--primary',
+    text:      'Click me',
+    methods:   {
+        clickHandler(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            console.log(e);
+        },
+    },
+});
+
+const buttonOutline = new Button({
+    classList: 'button--outline',
+    text:      'Click me',
+    methods:   {
+        clickHandler(e) {
+            console.log('outline');
+        },
+    },
+});
+
+const form = new Form({
+    title:         'Title',
+    login_button:  button,
+    signin_button: buttonOutline,
+    methods:       {
+        send: () => {
+            console.log('form submit');
+        },
+    },
+});
+
+render('#app', form);
+
+setTimeout(() => {
+    button.setProps({
+        text: 'Click me, please',
+    });
+}, 1000);
