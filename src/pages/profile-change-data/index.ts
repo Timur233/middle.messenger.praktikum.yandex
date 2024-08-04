@@ -9,6 +9,7 @@ import FormGroup from '../../components/form-group/formGroup.ts';
 import Button from '../../components/button/button.ts';
 
 const layout = new MainLayout();
+
 const navigation = new ProfileNavigation({
     links: [{
         link:    '/pages/profile/index.html',
@@ -20,17 +21,20 @@ const navigation = new ProfileNavigation({
         `,
     }],
 });
+
 const avatar = new ChangeAvatar({
     classList: 'user-profile__avatar',
     image:     'https://site.iskandarov.kz/storage/uploads/2024/07/15/timur-avatar_uid_6695699e4ab9d.jpg',
     title:     'Тимур',
     label:     'Поменять аватар',
 });
+
 const saveButton = new Button({
     type:      'submit',
     text:      'Сохранить',
     classList: 'button--primary',
 });
+
 const formFields: { [key: string]: FormGroup } = {
     email: new FormGroup({
         label:       'Email',
@@ -207,6 +211,7 @@ const formFields: { [key: string]: FormGroup } = {
         },
     }),
 };
+
 const changeDataForm = new ChangeDataForm({
     avatar,
     fields:  formFields,

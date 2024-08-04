@@ -28,6 +28,7 @@ type Message = {
 }
 
 const layout = new MainLayout();
+
 const chats: Chat[] = [{
     id:             0,
     isActive:       false,
@@ -51,7 +52,7 @@ const chats: Chat[] = [{
     isActive:       false,
     chatName:       'Илья',
     messagePreview: 'Друзья, Коля загрузил последний вебинар!...',
-    unreadMessages: 4,
+    unreadMessages: 1,
     date:           '08:49',
     avatarLink:     'https://site.iskandarov.kz/storage/uploads/2024/07/15/3_uid_669513da47b86.png',
     component:      null,
@@ -65,6 +66,7 @@ const chats: Chat[] = [{
     avatarLink:     'https://site.iskandarov.kz/storage/uploads/2024/07/15/4_uid_669513d99d25f.png',
     component:      null,
 }];
+
 const chatsMessages: {
     chatId: number,
     messages: Message[]
@@ -156,11 +158,13 @@ const chatsMessages: {
         ],
     },
 ];
+
 const chatList = new ChatList({
     title:     'Чаты',
     searchBar: null,
     chats:     [],
 });
+
 const searchBar = new Searchbar({
     methods: {
         onInput() {
@@ -172,18 +176,15 @@ const searchBar = new Searchbar({
                     const chatName = item.chatName.toLowerCase();
 
                     if (chatName.includes(inputValue)) {
-                        item.component?.setProps({
-                            isHide: false,
-                        });
+                        item.component?.show();
                     } else {
-                        item.component?.setProps({
-                            isHide: true,
-                        });
+                        item.component?.hide();
                     }
                 });
         },
     },
 });
+
 const messenger = new Messenger({
     activeChatId: null,
     methods:      {

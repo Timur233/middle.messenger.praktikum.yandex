@@ -6,36 +6,36 @@ interface Listeners {
 }
 
 export default class EventBus {
-    private listeners: Listeners;
+    private _listeners: Listeners;
 
     constructor() {
-        this.listeners = {};
+        this._listeners = {};
     }
 
     on(event: string, callback: Callback): void {
-        if (!this.listeners[event]) {
-            this.listeners[event] = [];
+        if (!this._listeners[event]) {
+            this._listeners[event] = [];
         }
 
-        this.listeners[event].push(callback);
+        this._listeners[event].push(callback);
     }
 
     off(event: string, callback: Callback): void {
-        if (!this.listeners[event]) {
+        if (!this._listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }
 
-        this.listeners[event] = this.listeners[event].filter(
+        this._listeners[event] = this._listeners[event].filter(
             listener => listener !== callback,
         );
     }
 
     emit(event: string, ...args: any[]): void {
-        if (!this.listeners[event]) {
+        if (!this._listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }
 
-        this.listeners[event].forEach((listener) => {
+        this._listeners[event].forEach((listener) => {
             listener(...args);
         });
     }

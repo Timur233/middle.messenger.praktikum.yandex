@@ -1,7 +1,7 @@
 export default function template() {
     return `
         <div
-            class="chat-item {{#if isActive}}chat-item--active{{/if}} {{#if isHide}}chat-item--hide{{/if}}"
+            class="chat-item {{#if isActive}}chat-item--active{{/if}}"
             data-chat-id="{{id}}"
             events="{'click': 'onClick'}"
         >

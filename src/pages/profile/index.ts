@@ -7,6 +7,7 @@ import ProfileData from './modules/profile-data/profile-data.ts';
 import ChangeAvatar from '../../components/change-avatar/change-avatar.ts';
 
 const layout = new MainLayout();
+
 const navigation = new ProfileNavigation({
     links: [{
         link:    '/',
@@ -18,12 +19,14 @@ const navigation = new ProfileNavigation({
         `,
     }],
 });
+
 const avatar = new ChangeAvatar({
     classList: 'user-profile__avatar',
     image:     'https://site.iskandarov.kz/storage/uploads/2024/07/15/timur-avatar_uid_6695699e4ab9d.jpg',
     title:     'Тимур',
     label:     'Поменять аватар',
 });
+
 const profileData = new ProfileData({
     userName:       'Тимур',
     avatar,
