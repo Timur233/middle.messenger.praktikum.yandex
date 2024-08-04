@@ -2,7 +2,9 @@ import Handlebars from 'handlebars';
 import { v4 as makeUUID } from 'uuid';
 import EventBus from './EventBus.ts';
 import addStyles from '../utils/addStyles.ts';
-import { Props, Methods, Childs } from './types.ts';
+import {
+    Props, Methods, ChildComponents, ComponentData,
+} from './types.ts';
 import PropsManager from './PropsManager.ts';
 
 export default class Component {
@@ -21,18 +23,18 @@ export default class Component {
 
     methods: Methods;
 
-    childs: Childs;
+    childs: ChildComponents;
 
     private eventBus: () => EventBus;
 
-    constructor(data: Props = {}) {
+    constructor(data: ComponentData = {}) {
         const eventBus: EventBus = new EventBus();
-        const descriptor = PropsManager.parse(data);
+        const compoentDescriptor = new PropsManager(data);
 
         this.id = makeUUID();
-        this.props = this.makePropsProxy(descriptor.props);
-        this.childs = descriptor.childs;
-        this.methods = descriptor.methods;
+        this.props = this.makePropsProxy(compoentDescriptor.props);
+        this.childs = compoentDescriptor.childs;
+        this.methods = compoentDescriptor.methods;
 
         this.eventBus = () => eventBus;
         this.registerEvents(eventBus);
@@ -81,8 +83,38 @@ export default class Component {
         this.eventBus().emit(Component.EVENTS.FLOW_CDU);
     }
 
-    getContent():HTMLElement {
+    getContent(selector: string = ''):HTMLElement {
+        if (selector !== '') {
+            return this.element?.querySelector(selector) as HTMLElement;
+        }
+
         return this.element as HTMLElement;
+    }
+
+    removeEvents():void {
+        const nodes: NodeList | undefined = this.element?.querySelectorAll('[events]');
+
+        if (nodes instanceof NodeList) {
+            [...Array.from(nodes), this.element].forEach((item: Node | null):void => {
+                const eventsString: string = (item as HTMLElement).getAttribute('events') as string;
+
+                const eventsObject: {[key: string]: string} = JSON.parse(eventsString
+                    ? eventsString?.replaceAll('\'', '"') : '{}');
+                const eventsKeys: string[] = Object.keys(eventsObject);
+
+                if (eventsKeys.length > 0) {
+                    eventsKeys.forEach((eventName: string): void => {
+                        const handlerName: string = eventsObject[eventName];
+
+                        if (this.methods instanceof Object) {
+                            (item as HTMLElement).removeEventListener(eventName, this.methods[handlerName]);
+                        }
+                    });
+                }
+
+                (item as HTMLElement).removeAttribute('events');
+            });
+        }
     }
 
     addEvents():void {
@@ -116,7 +148,11 @@ export default class Component {
             return;
         }
 
-        Object.assign(this.props, nextProps);
+        const props = new PropsManager(nextProps);
+
+        Object.assign(this.props, props.props);
+        this.childs = [...this.childs, ...props.childs];
+
         this.componentDidUpdate();
         this.dispatchComponentDidUpdate();
     };
@@ -132,25 +168,27 @@ export default class Component {
             const templateData: Props = { ...props };
             let rootElement:HTMLElement | null = null;
 
-            Object.entries(this.childs).forEach(([key, child]) => {
-                templateData[key] = `<div data-id="${child.id}"></div>`;
-            });
-
             templateNode.innerHTML = Handlebars.compile(template)(templateData);
             rootElement = templateNode.content.children[0] as HTMLElement;
 
-            this.element.parentNode?.replaceChild(rootElement, this.element);
-            this.element.remove();
-            this.element = rootElement;
-            this.element.setAttribute('data-id', this.id);
+            this.removeEvents();
 
-            Object.values(this.childs).forEach((child: Component) => {
-                const stub = this.element?.querySelector(`[data-id="${child.id}"]`);
+            setTimeout(() => {
+                if (this.element) {
+                    this.element.parentNode?.replaceChild(rootElement, this.element);
+                    this.element.remove();
+                    this.element = rootElement;
+                    this.element.setAttribute('data-id', this.id);
 
-                stub?.replaceWith(child.getContent());
-            });
+                    this.childs.forEach((child: Component) => {
+                        const stub = this.element?.querySelector(`[data-id="${child.id}"]`);
 
-            this.addEvents();
+                        stub?.replaceWith(child.getContent());
+                    });
+
+                    this.addEvents();
+                }
+            }, 0);
         }
     }
 

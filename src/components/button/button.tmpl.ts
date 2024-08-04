@@ -1,8 +1,7 @@
 export default function template() {
     return `
-        <button class="button {{classList}}" events="{ 'click': 'clickHandler' }" type="button">
+        <button class="button {{classList}}" events="{ 'click': 'clickHandler' }" type="{{type}}">
             {{text}}
-            <span class="icon" events="{ 'click': 'clickHandler' }">   click</span>
         </button>
     `;
 }

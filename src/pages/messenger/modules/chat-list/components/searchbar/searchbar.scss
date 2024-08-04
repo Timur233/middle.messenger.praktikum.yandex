@@ -1,0 +1,55 @@
+/* stylelint-disable selector-class-pattern */
+@import '../../../../vars';
+
+.searchbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+
+    &__input {
+        width: 100%;
+        padding: 6px 6px 6px 32px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: var(--text-color);
+        box-sizing: border-box;
+        background-color: $searchbar-bg-color;
+        border-color: $searchbar-border-color;
+    }
+
+    &__placeholder {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: left 0.20s ease-in-out, transform 0.20s;
+    }
+
+    &__input:focus + .searchbar__placeholder,
+    &__input:not(:placeholder-shown) + .searchbar__placeholder {
+        left: 20px;
+        transform: translateX(0);
+    }
+
+    &__input:focus + .searchbar__placeholder .search-placeholder__text,
+    &__input:not(:placeholder-shown) + .searchbar__placeholder .search-placeholder__text {
+        opacity: 0;
+    }
+}
+
+.search-placeholder {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray-color-lighten);
+    user-select: none;
+    pointer-events: none;
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    &__text {
+        transition: opacity .15s;
+    }
+}
