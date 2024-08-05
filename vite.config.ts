@@ -58,6 +58,10 @@ export default defineConfig({
                     __dirname,
                     './src/pages/profile-change-password/index.html',
                 ),
+                httpTransportPlayground: resolve(
+                    __dirname,
+                    './src/pages/http-transport-playground/index.html',
+                ),
                 errorNotFound: resolve(
                     __dirname,
                     './src/pages/error-not-found/index.html',
