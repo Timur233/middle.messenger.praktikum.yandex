@@ -12,10 +12,10 @@ class PropsManager {
 
     childs: ChildComponents;
 
-    private _visited: WeakMap<object, any> = new WeakMap();
+    private _visited: WeakMap<object, unknown> = new WeakMap();
 
     constructor(data: ComponentData) {
-        this.componentData = this.deepCopy(data);
+        this.componentData = this.deepCopy<ComponentData>(data);
         this.methods = this.componentData?.methods ?? {};
         this.props = {};
         this.childs = [];
@@ -38,11 +38,11 @@ class PropsManager {
             // eslint-disable-next-line no-console
             console.warn(`Обнаружена циклическая зависимость. Объект: ${currentObject}`);
 
-            return this._visited.get(currentObject as object);
+            return this._visited.get(currentObject as object) as T;
         }
 
         if (Array.isArray(currentObject)) {
-            const copy: any[] = [];
+            const copy: unknown[] = [];
 
             this._visited.set(currentObject, copy);
 
@@ -50,11 +50,11 @@ class PropsManager {
                 copy.push(this.deepCopy(item));
             });
 
-            return copy as any as T;
+            return copy as unknown as T;
         }
 
         if (currentObject instanceof Date) {
-            return new Date(currentObject.getTime()) as any as T;
+            return new Date(currentObject.getTime()) as unknown as T;
         }
 
         if (currentObject instanceof Map) {
@@ -65,7 +65,7 @@ class PropsManager {
                 copy.set(key, this.deepCopy(value));
             });
 
-            return copy as any as T;
+            return copy as unknown as T;
         }
 
         if (currentObject instanceof Set) {
@@ -76,32 +76,32 @@ class PropsManager {
                 copy.add(this.deepCopy(value));
             });
 
-            return copy as any as T;
+            return copy as unknown as T;
         }
 
-        const copy: { [key: string]: any } = {};
+        const copy: { [key: string]: unknown } = {};
 
         this._visited.set(currentObject, copy);
         Object.keys(currentObject).forEach((key: string) => {
             if (Object.prototype.hasOwnProperty.call(currentObject, key)) {
-                copy[key] = this.deepCopy((currentObject as { [key: string]: any })[key]);
+                copy[key] = this.deepCopy((currentObject as { [key: string]: unknown })[key]);
             }
         });
 
         return copy as T;
     }
 
-    recursiveParse(currentObject: any, targetObject: any = null): void {
+    recursiveParse(currentObject: ComponentData | unknown, targetObject: Props): void {
         if (Array.isArray(currentObject)) {
             currentObject.forEach((item, index) => {
                 if (this.callback(String(index), item, targetObject)) {
-                    this.recursiveParse(item, targetObject[index]);
+                    this.recursiveParse(item, targetObject[index] as Props);
                 }
             });
         } else if (typeof currentObject === 'object' && currentObject !== null) {
-            Object.keys(currentObject).forEach((key) => {
-                if (this.callback(key, currentObject[key], targetObject)) {
-                    this.recursiveParse(currentObject[key], targetObject[key]);
+            Object.keys(currentObject).forEach((key: string) => {
+                if (this.callback(key, (currentObject as ComponentData)[key], targetObject)) {
+                    this.recursiveParse((currentObject as ComponentData)[key], targetObject[key] as Props);
                 }
             });
         }

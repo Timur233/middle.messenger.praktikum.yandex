@@ -25,6 +25,9 @@ const pageData = {
     '/pages/profile-change-password/index.html': {
         title: 'Изменить пароль',
     },
+    '/pages/http-transport-playground/index.html': {
+        title: 'HTTPTransport playground',
+    },
     '/pages/error-not-found/index.html': {
         title: '404 - Вы потерялись',
     },
@@ -75,9 +78,7 @@ export default defineConfig({
     publicDir: '../static',
     plugins:   [
         handlebars({
-            context(pagePath) {
-                return pageData[pagePath];
-            },
+            context: (pagePath: string | number) => pageData[pagePath],
         }),
     ],
 });

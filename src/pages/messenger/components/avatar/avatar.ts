@@ -1,5 +1,5 @@
 import template from './avatar.tmpl.ts';
-import Component from '../../../../../../services/Component.ts';
+import Component from '../../../../services/Component.ts';
 
 class Avatar extends Component {
     render():void {

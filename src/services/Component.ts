@@ -43,14 +43,14 @@ export default class Component {
 
     private _registerEvents(eventBus: EventBus): void {
         eventBus.on(Component.EVENTS.INIT, this.init.bind(this));
-        eventBus.on(Component.EVENTS.FLOW_CDM, this.componentDidMount.bind(this));
-        eventBus.on(Component.EVENTS.FLOW_CDU, this.componentDidUpdate.bind(this));
+        eventBus.on(Component.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+        eventBus.on(Component.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Component.EVENTS.FLOWrender, this.render.bind(this));
     }
 
     private _makePropsProxy(baseProps: Props): Props {
         return new Proxy(baseProps, {
-            get: (target: Props, property: string): any => target[property],
+            get: (target: Props, property: string): unknown => target[property],
             set: (target: Props, property: string, value: unknown): boolean => {
                 target[property] = value;
 
@@ -79,29 +79,35 @@ export default class Component {
             return;
         }
 
+        const prevProps = { ...this.props };
         const props = new PropsManager(nextProps);
 
         Object.assign(this.props, props.props);
         this.childs = [...this.childs, ...props.childs];
 
-        this.componentDidUpdate();
-        this.dispatchComponentDidUpdate();
+        this.dispatchComponentDidUpdate(prevProps, this.props);
     };
 
-    componentDidMount():void {
-        this._eventBus();
+    // eslint-disable-next-line class-methods-use-this
+    componentDidMount():void {}
+
+    private _componentDidMount():void {
+        this.componentDidMount();
     }
 
-    dispatchComponentDidMoun():void {
+    dispatchComponentDidMount():void {
         this._eventBus().emit(Component.EVENTS.FLOW_CDM);
     }
 
-    componentDidUpdate():void {
-        this._eventBus();
+    // eslint-disable-next-line class-methods-use-this, no-unused-vars
+    componentDidUpdate(prevProps?: Props | unknown, nextProps?: Props | unknown):void {}
+
+    private _componentDidUpdate(prevProps: Props | unknown, nextProps: Props | unknown):void {
+        this.componentDidUpdate(prevProps, nextProps);
     }
 
-    dispatchComponentDidUpdate():void {
-        this._eventBus().emit(Component.EVENTS.FLOW_CDU);
+    dispatchComponentDidUpdate(prevProps: Props, nextProps: Props):void {
+        this._eventBus().emit(Component.EVENTS.FLOW_CDU, prevProps, nextProps);
     }
 
     private removeEvents():void {
@@ -178,6 +184,7 @@ export default class Component {
                         const stub = this._element?.querySelector(`[data-id="${child.id}"]`);
 
                         stub?.replaceWith(child.getContent());
+                        child.dispatchComponentDidMount();
                     });
 
                     this.addEvents();

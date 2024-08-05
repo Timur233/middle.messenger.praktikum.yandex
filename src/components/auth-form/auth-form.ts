@@ -1,12 +1,12 @@
-import './change-data-form.scss';
-import template from './change-data-form.tmpl.ts';
+import './auth-form.scss';
+import template from './auth-form.tmpl.ts';
 import Component from '../../services/Component.ts';
 
 type FieldsList = {
     [key: string]: String;
 };
 
-class ChangeDataForm extends Component {
+class Form extends Component {
     validate(): Boolean {
         let hasError: Boolean = false;
 
@@ -35,4 +35,4 @@ class ChangeDataForm extends Component {
     }
 }
 
-export default ChangeDataForm;
+export default Form;

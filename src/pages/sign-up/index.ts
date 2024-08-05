@@ -3,9 +3,8 @@ import './style.scss';
 
 import render from '../../utils/render.ts';
 import Button from '../../components/button/button.ts';
-import Form from '../../components/form/form.ts';
-import Component from '../../services/Component.ts';
-import FormGroup from '../../components/form-group/formGroup.ts';
+import Form from '../../components/auth-form/auth-form.ts';
+import FormGroup from '../../components/form-group/form-group.ts';
 
 const formFields: { [key: string]: FormGroup } = {
     email: new FormGroup({
@@ -191,7 +190,7 @@ const loginButton = new Button({
     text:      'Вход',
     type:      'button',
     methods:   {
-        clickHandler() {
+        onClick() {
             document.location = '/pages/login/';
         },
     },
@@ -205,19 +204,7 @@ const form = new Form({
         onSubmit: (e: Event | undefined) => {
             if (e instanceof Event) e.preventDefault();
 
-            let hasError: Boolean = false;
-
-            Object.keys(formFields).forEach((key: string) => {
-                const field: Component = formFields[key];
-
-                field.methods?.validate();
-
-                if (field.props?.hasError === true) {
-                    hasError = field.props?.hasError;
-                }
-            });
-
-            if (hasError === false) {
+            if (form.validate() === false) {
                 // eslint-disable-next-line no-console
                 console.log({
                     email:       formFields.email.getValue(),

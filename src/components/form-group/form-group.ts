@@ -1,5 +1,5 @@
-import './formGroup.scss';
-import template from './formGroup.tmpl.ts';
+import './form-group.scss';
+import template from './form-group.tmpl.ts';
 import Component from '../../services/Component.ts';
 
 class FormGroup extends Component {

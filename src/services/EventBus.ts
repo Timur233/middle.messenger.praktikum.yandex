@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-type Callback = (...args: any[]) => void;
+type Callback<Args extends unknown[] = unknown[], ReturnType = void> = (...args: Args) => ReturnType;
 
 interface Listeners {
     [event: string]: Callback[];
@@ -30,7 +30,7 @@ export default class EventBus {
         );
     }
 
-    emit(event: string, ...args: any[]): void {
+    emit(event: string, ...args: unknown[]): void {
         if (!this._listeners[event]) {
             throw new Error(`Нет события: ${event}`);
         }

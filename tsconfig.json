@@ -10,11 +10,15 @@
         "isolatedModules": true,
         "esModuleInterop": true,
         "noEmit": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
         "noImplicitReturns": true,
         "skipLibCheck": true,
-        "allowImportingTsExtensions": true
+        "allowImportingTsExtensions": true,
+
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "sourceMap": true,
+        "strictNullChecks": true
     },
     "include": ["src"]
 }

@@ -6,10 +6,14 @@
   "scripts": {
     "dev": "vite --host",
     "prebuild": "tsc --noEmit",
+    "lint:ts": "eslint '**/*.ts'",
+    "lint:scss": "stylelint '**/*.scss'",
+    "lint": "npm run lint:ts && npm run lint:scss",
     "build": "vite build",
     "start": "vite build && vite preview --port 3000"
   },
   "devDependencies": {
+    "@types/handlebars": "^4.1.0",
     "@types/node": "^22.1.0",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/parser": "^7.18.0",

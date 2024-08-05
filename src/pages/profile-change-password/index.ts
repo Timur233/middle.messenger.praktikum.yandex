@@ -5,7 +5,7 @@ import MainLayout from '../../layout/main/main.ts';
 import ProfileNavigation from '../../modules/profile-navigation/profile-navigation.ts';
 import ChangeDataForm from '../../components/change-data-form/change-data-form.ts';
 import ChangeAvatar from '../../components/change-avatar/change-avatar.ts';
-import FormGroup from '../../components/form-group/formGroup.ts';
+import FormGroup from '../../components/form-group/form-group.ts';
 import Button from '../../components/button/button.ts';
 
 const layout = new MainLayout();
@@ -130,19 +130,7 @@ const changeDataForm = new ChangeDataForm({
         onSubmit: (e: Event | undefined) => {
             if (e instanceof Event) e.preventDefault();
 
-            let hasError: Boolean = false;
-
-            Object.keys(formFields).forEach((key: string) => {
-                const field: FormGroup = formFields[key];
-
-                field.methods?.validate();
-
-                if (field.props?.hasError === true) {
-                    hasError = field.props?.hasError;
-                }
-            });
-
-            if (hasError === false) {
+            if (changeDataForm.validate() === false) {
                 // eslint-disable-next-line no-console
                 console.log({
                     oldPassword:       formFields.oldPassword.getValue(),

@@ -32,6 +32,10 @@ const siteNavigation = new SiteNavigation({
             link:  './pages/profile-change-password/index.html',
         },
         {
+            title: 'HTTPTransport - игровая площадка',
+            link:  './pages/http-transport-playground/index.html',
+        },
+        {
             title: 'Страница 404',
             link:  './pages/error-not-found/index.html',
         },

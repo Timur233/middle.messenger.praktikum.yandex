@@ -5,8 +5,8 @@ import MainLayout from '../../layout/main/main.ts';
 import ChatList from './modules/chat-list/chat-list.ts';
 import Searchbar from './modules/chat-list/components/searchbar/searchbar.ts';
 import ChatItem from './modules/chat-list/components/chat-item/chat-item.ts';
-import Avatar from './modules/chat-list/components/avatar/avatar.ts';
-import Messenger from './modules/chat-list/components/messenger/messenger.ts';
+import Messenger from './modules/messenger/messenger.ts';
+import Avatar from './components/avatar/avatar.ts';
 
 type Chat = {
     id: number,
@@ -191,8 +191,8 @@ const messenger = new Messenger({
         showDropdown(event: Event | undefined) {
             const dropdown = messenger.getContent('.source-dropdown');
             const removeHandler = (e: Event | undefined) => {
-                if (e?.target instanceof Event
-                    && event?.target instanceof Event
+                if (e instanceof Event
+                    && event instanceof Event
                     && e.target === event.target) return;
 
                 dropdown.classList.remove('source-dropdown--show');
