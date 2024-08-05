@@ -15,6 +15,12 @@
 
 Подключил шаблонизатор Handlebars. Так как я использовал подход при котором компиляция и рендеринг происходит на сервере, пришлось разместить все компоненты сайта в одной папке.
 
+Внедрил компонентный подход, классы Сomponent, EventBus, PropsManager
+
+Добавил класс для работы с сервером. HTTPTransport, HTTPResponse
+
+Добавил в проект линтеры Eslint, Stylelint
+
 ## Структура проекта
 
 ```bash
@@ -22,28 +28,47 @@ project-root/
 │
 ├── src/
 │   ├── components/
-│   │   ├── avatar.hbs
-│   │   ├── button.hbs
-│   │   ├── change-avatar.hbs
-│   │   ├── chat-item.hbs
-│   │   ├── error-message.hbs
-│   │   ├── form-group.hbs
-│   │   └── search-chats.hbs
+│   │   ├── auth-form/
+│   │   │   ├── auth-form.scss
+│   │   │   ├── auth-form.tmpl.ts
+│   │   │   └── auth-form.ts
+│   │   ├── button
+│   │   ├── change-avatar
+│   │   ├── change-data-form
+│   │   ├── form-group
+│   │   └── user-data-form
+│   ├── layout/
+│   │   └── main/
+│   │   │   ├── main.scss
+│   │   │   ├── main.tmpl.ts
+│   │   │   └── main.ts
+│   ├── modules/
+│   │   ├── error-message/
+│   │   │   ├── error-message.scss
+│   │   │   ├── error-message.tmpl.ts
+│   │   │   └── error-message.ts
+│   │   ├── profile-navigation
+│   │   └── site-navigation
 │   ├── pages/
+│   │   ├── messenger/
+│   │   │   ├── components/
+│   │   │   ├── modules/
+│   │   │   │   └── module/
+│   │   │   │   │   └── components/
+│   │   │   ├── style.scss
+│   │   │   ├── index.ts
+│   │   │   └── index.html
 │   │   ├── error-not-found
-│   │   │   ├── index.html
-│   │   │   ├── index.js
-│   │   │   └── style.scss
 │   │   ├── error-server
 │   │   ├── login
-│   │   ├── messenger
 │   │   ├── profile
 │   │   ├── profile-change-data
+│   │   ├── http-transport-playground
 │   │   ├── profile-change-password
 │   │   └── sign-up
 │   ├── index.html
 │   ├── style.scss
-│   └── main.js
+│   └── index.ts
 │
 ├── static/
 │   ├── assets/
@@ -55,8 +80,14 @@ project-root/
 │
 ├── README.md
 ├── .gitignore
+├── .editorconfig
+├── .eslintignore
+├── .eslintrc.cjs
+├── stylelint.config.cjs
 ├── netlify.toml
-├── vite.config.js
+├── vite-plugin-handlebars.d.ts
+├── vite.config.ts
+├── tsconfig.json
 ├── package-lock.json
 └── package.json
 ```
@@ -67,6 +98,7 @@ project-root/
 - Handlebars
 - SCSS
 - SVG
+- Eslint, Stylelint
 
 ## Установка проекта
 
@@ -77,6 +109,7 @@ npm install
 ## Основные команды
 
 ```bash
+npm run lint — запуск линтеров
 npm run dev — запуск версии для разработчика
 npm run start — запуск проекта
 npm run build — сборка стабильной версии
