@@ -1,7 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-// eslint-disable-next-line import/no-unresolved
 import handlebars from 'vite-plugin-handlebars';
 
 const pageData = {
