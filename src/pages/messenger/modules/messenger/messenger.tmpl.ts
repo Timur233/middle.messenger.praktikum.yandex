@@ -41,21 +41,27 @@ export default function template() {
                         <div class="messenger-form__source">
                             <div class="source-dropdown">
                                 <div class="source-dropdown__item">
-                                    <svg class="svg-icon" style="height: 18px;">
-                                        <use xlink:href="/assets/icons.svg#source-image"></use>
-                                    </svg>
+                                    <div class="source-dropdown__item-icon">
+                                        <svg class="svg-icon" style="height: 18px;">
+                                            <use xlink:href="/assets/icons.svg#source-image"></use>
+                                        </svg>
+                                    </div>
                                     <span>Фото или Видео</span>
                                 </div>
                                 <div class="source-dropdown__item">
-                                    <svg class="svg-icon" style="height: 18px;">
-                                        <use xlink:href="/assets/icons.svg#source-file"></use>
-                                    </svg>
+                                    <div class="source-dropdown__item-icon">
+                                        <svg class="svg-icon" style="height: 18px;">
+                                            <use xlink:href="/assets/icons.svg#source-file"></use>
+                                        </svg>
+                                    </div>
                                     <span>Файл</span>
                                 </div>
                                 <div class="source-dropdown__item">
-                                    <svg class="svg-icon" style="height: 18px;">
-                                        <use xlink:href="/assets/icons.svg#source-location"></use>
-                                    </svg>
+                                    <div class="source-dropdown__item-icon">
+                                        <svg class="svg-icon" style="height: 18px;">
+                                            <use xlink:href="/assets/icons.svg#source-location"></use>
+                                        </svg>
+                                    </div>
                                     <span>Локация</span>
                                 </div>
                             </div>
