@@ -100,7 +100,7 @@ export default class Component {
     }
 
     // eslint-disable-next-line class-methods-use-this, no-unused-vars
-    componentDidUpdate(prevProps?: Props | unknown, nextProps?: Props | unknown) { }
+    componentDidUpdate(_prevProps?: Props | unknown, _nextProps?: Props | unknown) { }
 
     private _componentDidUpdate(prevProps: Props | unknown, nextProps: Props | unknown):void {
         this.componentDidUpdate(prevProps, nextProps);
