@@ -1,0 +1,9 @@
+.change-data-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &__actions {
+        margin-top: 12px;
+    }
+}
