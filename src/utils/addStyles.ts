@@ -9,7 +9,7 @@ export default function addStyles(element: HTMLElement, styles: Styles) {
         if (key in element.style) {
             /**
              * Не нашел другого решения кроме как использовать any
-             * keyof CSSStyleDeclaration вы дает ошибку
+             * keyof CSSStyleDeclaration выдает ошибку
              * unknown тем более
              */
             element.style[key as any] = styles[key] as string;

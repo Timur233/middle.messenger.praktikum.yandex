@@ -23,28 +23,26 @@ type Options = {
     headers?: Headers
 };
 
+// eslint-disable-next-line no-unused-vars
+type HTTPMethod = (url: string, options?: Options) => Promise<HTTPResponse>
+
 class HTTPTransport {
     METHODS = METHODS;
 
-    get(url: string, options?: Options) {
-        return this.httpRequest(url, { ...options, method: METHODS.GET }, options?.timeout);
-    }
+    get: HTTPMethod = (url, options = {}) => this
+        .httpRequest(url, { ...options, method: METHODS.GET }, options?.timeout);
 
-    post(url: string, options: Options) {
-        return this.httpRequest(url, { ...options, method: METHODS.POST }, options?.timeout);
-    }
+    post: HTTPMethod = (url, options = {}) => this
+        .httpRequest(url, { ...options, method: METHODS.POST }, options?.timeout);
 
-    put(url: string, options: Options) {
-        return this.httpRequest(url, { ...options, method: METHODS.PUT }, options?.timeout);
-    }
+    put: HTTPMethod = (url, options = {}) => this
+        .httpRequest(url, { ...options, method: METHODS.PUT }, options?.timeout);
 
-    patch(url: string, options: Options) {
-        return this.httpRequest(url, { ...options, method: METHODS.PATCH }, options?.timeout);
-    }
+    patch: HTTPMethod = (url, options = {}) => this
+        .httpRequest(url, { ...options, method: METHODS.PATCH }, options?.timeout);
 
-    delete(url: string, options: Options) {
-        return this.httpRequest(url, { ...options, method: METHODS.DELETE }, options?.timeout);
-    }
+    delete: HTTPMethod = (url, options = {}) => this
+        .httpRequest(url, { ...options, method: METHODS.DELETE }, options?.timeout);
 
     httpRequest(
         url: string,
