@@ -5,7 +5,7 @@ export interface Methods {
     [key: string]: (event?: Event) => void
 }
 
-export interface ComponentData {
+export interface ComponentDataType {
     [key: string]: unknown,
     methods?: Methods
 }

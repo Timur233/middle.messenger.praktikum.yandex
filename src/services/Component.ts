@@ -3,11 +3,11 @@ import { v4 as makeUUID } from 'uuid';
 import EventBus from './EventBus.ts';
 import addStyles from '../utils/addStyles.ts';
 import {
-    Props, Methods, ChildComponents, ComponentData,
+    Props, Methods, ChildComponents, ComponentDataType,
 } from './types.ts';
 import PropsManager from './PropsManager.ts';
 
-export default class Component {
+export default class Component <ComponentData extends ComponentDataType = {}> {
     static EVENTS: { [key: string]: string } = {
         INIT:       'init',
         FLOW_CDM:   'flow:component-did-mount',
@@ -27,9 +27,9 @@ export default class Component {
 
     private _eventBus: () => EventBus;
 
-    constructor(data: ComponentData = {}) {
+    constructor(data?: ComponentData) {
         const eventBus: EventBus = new EventBus();
-        const compoentDescriptor = new PropsManager(data);
+        const compoentDescriptor = new PropsManager(data || {});
 
         this.id = makeUUID();
         this.props = this._makePropsProxy(compoentDescriptor.props);
