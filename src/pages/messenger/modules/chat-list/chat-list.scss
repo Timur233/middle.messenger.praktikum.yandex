@@ -1,0 +1,46 @@
+@import '../../vars';
+
+.chats {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px 8px;
+    background-color: var(--white-color);
+    border-right: 1px solid var(--border-color);
+
+    &__header {
+        margin-bottom: 20px;
+    }
+
+    &__title {
+        font-size: 12px;
+        font-weight: 500;
+        padding: 0 8px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        /* stylelint-disable-next-line scss/selector-no-redundant-nesting-selector */
+        & a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gray-color-lighten);
+            text-decoration: none;
+        }
+    }
+
+    &__search {
+        padding: 0 8px;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        overflow: auto;
+
+        @include scroll-settings;
+    }
+}

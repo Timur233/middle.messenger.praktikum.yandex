@@ -1,0 +1,32 @@
+/* stylelint-disable */
+$message-backgorund: var(--white-color);
+$message-backgorund-right: rgb(0 120 210 / 17%);
+$chat-item-hover-bg: rgb(244 244 244);
+$chat-item-active-bg: #F2F2F2;
+$searchbar-bg-color: #EFEFEF;
+$searchbar-border-color: #EFEFEF;
+$scrollbar-bg: var(--white-color);
+$scrollbar-thumb-bg: #a5a5a5;
+$scrollbar-thumb-hover-bg: #808080;
+
+@mixin chat-logo {
+    display: block;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+@mixin scroll-settings {
+    &::-webkit-scrollbar {
+        width: 2px;
+        background-color: $scrollbar-bg;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $scrollbar-thumb-bg;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background-color: $scrollbar-thumb-hover-bg;
+    }
+}
