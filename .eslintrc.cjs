@@ -75,5 +75,6 @@ module.exports = {
         'arrow-parens':                      ['error', 'as-needed', { requireForBlockBody: true }],
         'import/no-extraneous-dependencies': 'off',
         'import/no-unresolved':              'off',
+        '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
 };

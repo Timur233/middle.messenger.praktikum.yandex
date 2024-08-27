@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import handlebars from 'vite-plugin-handlebars';
 
 const pageData = {
     '/index.html': {
@@ -41,34 +40,34 @@ export default defineConfig({
     build: {
         rollupOptions: {
             input: {
-                index:     resolve(__dirname, './src/index.html'),
-                login:     resolve(__dirname, './src/pages/login/index.html'),
-                signUp:    resolve(__dirname, './src/pages/sign-up/index.html'),
-                messenger: resolve(
-                    __dirname,
-                    './src/pages/messenger/index.html',
-                ),
-                profile:           resolve(__dirname, './src/pages/profile/index.html'),
-                profileChangeData: resolve(
-                    __dirname,
-                    './src/pages/profile-change-data/index.html',
-                ),
-                profileChangePassword: resolve(
-                    __dirname,
-                    './src/pages/profile-change-password/index.html',
-                ),
-                httpTransportPlayground: resolve(
-                    __dirname,
-                    './src/pages/http-transport-playground/index.html',
-                ),
-                errorNotFound: resolve(
-                    __dirname,
-                    './src/pages/error-not-found/index.html',
-                ),
-                errorServer: resolve(
-                    __dirname,
-                    './src/pages/error-server/index.html',
-                ),
+                index: resolve(__dirname, './src/index.html'),
+                // login:     resolve(__dirname, './src/pages/login/index.html'),
+                // signUp:    resolve(__dirname, './src/pages/sign-up/index.html'),
+                // messenger: resolve(
+                //     __dirname,
+                //     './src/pages/messenger/index.html',
+                // ),
+                // profile:           resolve(__dirname, './src/pages/profile/index.html'),
+                // profileChangeData: resolve(
+                //     __dirname,
+                //     './src/pages/profile-change-data/index.html',
+                // ),
+                // profileChangePassword: resolve(
+                //     __dirname,
+                //     './src/pages/profile-change-password/index.html',
+                // ),
+                // httpTransportPlayground: resolve(
+                //     __dirname,
+                //     './src/pages/http-transport-playground/index.html',
+                // ),
+                // errorNotFound: resolve(
+                //     __dirname,
+                //     './src/pages/error-not-found/index.html',
+                // ),
+                // errorServer: resolve(
+                //     __dirname,
+                //     './src/pages/error-server/index.html',
+                // ),
             },
         },
         outDir:      '../dist',
@@ -79,9 +78,4 @@ export default defineConfig({
         port: 3000,
     },
     publicDir: '../static',
-    plugins:   [
-        handlebars({
-            context: (pagePath: string | number) => pageData[pagePath],
-        }),
-    ],
 });

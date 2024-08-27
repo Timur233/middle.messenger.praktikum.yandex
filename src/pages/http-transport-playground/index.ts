@@ -6,7 +6,7 @@ import MainLayout from '../../layout/main/main.ts';
 import ProfileNavigation from '../../modules/profile-navigation/profile-navigation.ts';
 import HttpPlayground from './modules/http-playground/http-playground.ts';
 import Button from '../../components/button/button.ts';
-import HTTPTransport from '../../services/HTTPtransport.ts';
+import HTTPTransport from '../../services/http/HTTPtransport.ts';
 
 const transport = new HTTPTransport();
 

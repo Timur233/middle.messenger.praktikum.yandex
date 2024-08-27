@@ -12,16 +12,22 @@ class Searchbar extends Component {
     }
 
     togglePlaceholder() {
-        const input = this.getContent('input.searchbar__input');
+        const input: HTMLInputElement = this.getContent('input.searchbar__input') as HTMLInputElement;
         const searchBar = this.getContent();
 
-        input.addEventListener('focus', () => {
-            searchBar.classList.add('searchbar--hide-placeholder');
-        });
+        if (input) {
+            input.addEventListener('focus', () => {
+                searchBar.classList.add('searchbar--hide-placeholder');
+            });
 
-        input.addEventListener('blur', () => {
-            searchBar.classList.remove('searchbar--hide-placeholder');
-        });
+            input.addEventListener('blur', () => {
+                if (input.value === '') searchBar.classList.remove('searchbar--hide-placeholder');
+            });
+        }
+    }
+
+    clearValue() {
+        this.setProps({ value: '' });
     }
 
     render():void {

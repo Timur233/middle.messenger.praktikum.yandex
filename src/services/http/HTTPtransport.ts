@@ -1,6 +1,6 @@
+import config from './cofing.ts';
 import HTTPResponse from './HTTPResponse.ts';
 
-/* eslint-disable no-unused-vars, no-shadow */
 enum METHODS {
     GET = 'GET',
     POST = 'POST',
@@ -8,7 +8,6 @@ enum METHODS {
     PATCH = 'PATCH',
     DELETE = 'DELETE'
 }
-/* eslint-enable no-unused-vars, no-shadow */
 
 type Headers = {
     [key: string]: string
@@ -23,31 +22,33 @@ type Options = {
     headers?: Headers
 };
 
-// eslint-disable-next-line no-unused-vars
 type HTTPMethod = (url: string, options?: Options) => Promise<HTTPResponse>
 
 class HTTPTransport {
     METHODS = METHODS;
 
+    APP_URL: string = config.APP_URL;
+
     get: HTTPMethod = (url, options = {}) => this
-        .httpRequest(url, { ...options, method: METHODS.GET }, options?.timeout);
+        .httpRequest(this.APP_URL + url, { ...options, method: METHODS.GET }, options?.timeout);
 
     post: HTTPMethod = (url, options = {}) => this
-        .httpRequest(url, { ...options, method: METHODS.POST }, options?.timeout);
+        .httpRequest(this.APP_URL + url, { ...options, method: METHODS.POST }, options?.timeout);
 
     put: HTTPMethod = (url, options = {}) => this
-        .httpRequest(url, { ...options, method: METHODS.PUT }, options?.timeout);
+        .httpRequest(this.APP_URL + url, { ...options, method: METHODS.PUT }, options?.timeout);
 
     patch: HTTPMethod = (url, options = {}) => this
-        .httpRequest(url, { ...options, method: METHODS.PATCH }, options?.timeout);
+        .httpRequest(this.APP_URL + url, { ...options, method: METHODS.PATCH }, options?.timeout);
 
     delete: HTTPMethod = (url, options = {}) => this
-        .httpRequest(url, { ...options, method: METHODS.DELETE }, options?.timeout);
+        .httpRequest(this.APP_URL + url, { ...options, method: METHODS.DELETE }, options?.timeout);
 
     httpRequest(
         url: string,
         options: Options = { method: METHODS.GET },
         timeout: number = 5000,
+        withCredentials: boolean = true,
     ): Promise<HTTPResponse> {
         const { method } = options;
         const headers: Headers | undefined = options?.headers;
@@ -68,6 +69,7 @@ class HTTPTransport {
             xhr.ontimeout = reject;
 
             xhr.timeout = timeout;
+            xhr.withCredentials = withCredentials;
             HTTPTransport.setHeaders(xhr, headers || {});
 
             if (method === METHODS.GET) {

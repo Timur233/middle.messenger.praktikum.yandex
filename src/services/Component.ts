@@ -217,6 +217,12 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
         }
     }
 
+    remove():void {
+        if (this._element instanceof HTMLElement) {
+            this._element.remove();
+        }
+    }
+
     static createELement(tag: string): HTMLElement {
         return document.createElement(tag);
     }

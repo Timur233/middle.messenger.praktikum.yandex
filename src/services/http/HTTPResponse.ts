@@ -9,7 +9,7 @@ class HTTPResponse {
         try {
             return JSON.parse(this.xhr.responseText);
         } catch (error) {
-            throw new Error('Invalid JSON response');
+            throw new Error(`Invalid JSON response ${error}`);
         }
     }
 
