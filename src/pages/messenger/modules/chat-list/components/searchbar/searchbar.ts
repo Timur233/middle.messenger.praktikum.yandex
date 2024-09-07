@@ -9,6 +9,7 @@ class Searchbar extends Component {
 
     componentDidUpdate(): void {
         this.togglePlaceholder();
+        this.render();
     }
 
     togglePlaceholder() {

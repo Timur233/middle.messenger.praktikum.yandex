@@ -1,52 +1,38 @@
 import BaseAPI from './BaseAPI.ts';
-
-export type LoginData = {
-    login: string;
-    password: string;
-}
-
-export type RegisterData = {
-    first_name: string;
-    second_name: string;
-    login: string;
-    email: string;
-    password: string;
-    phone: string;
-}
-
-export type User = {
-    id: number;
-    first_name: string;
-    second_name: string;
-    login: string;
-    email: string;
-    password: string;
-    phone: string;
-    avatar: string;
-}
+import { SigninRequestType, SignupRequestType, UserResponseType } from './types.ts';
+import router from '../services/router/Router.ts';
 
 export class AuthAPI extends BaseAPI {
-    a: number;
+    public user() {
+        return this.http.get('/auth/user', { headers: { 'Content-type': 'application/json' } })
+            .then((res) => {
+                if (res.status === 401) router.go('/logout');
 
-    constructor() {
-        super();
-
-        this.a = 2;
+                return res;
+            })
+            .then(res => res.json() as UserResponseType)
+            .catch(() => {
+                router.go('/error');
+            });
     }
 
-    public login = (data : LoginData) => this.http.post('https://ya-praktikum.tech/api/v2/signin', { data });
+    public signup(data: SignupRequestType) {
+        return this.http.post('/auth/signup', {
+            headers: { 'Content-type': 'application/json' },
+            data,
+        });
+    }
 
-    public register = (data : RegisterData) => this.http.post('https://ya-praktikum.tech/api/v2/signup', { data });
+    public signin(data: SigninRequestType) {
+        return this.http.post('/auth/signin', {
+            headers: { 'Content-type': 'application/json' },
+            data,
+        });
+    }
 
-    public read = () => this.http.get('/user');
-
-    public logout = () => this.http.post('/logout');
-
-    update = undefined;
-
-    create = undefined;
-
-    delete = undefined;
+    public logout() {
+        return this.http.post('/auth/logout');
+    }
 }
 
 export default new AuthAPI();

@@ -7,22 +7,25 @@ type PageMeta = {
 };
 
 export default class Page extends Component {
-    private _layout: Component | null;
+    private _layoutElement: Component | null;
+
+    private _loaderElement: Component | null;
 
     private _pageMeta: PageMeta;
 
-    constructor(...args: unknown[]) {
-        super(args);
+    constructor(...args: any[]) {
+        super(...args);
 
         this._pageMeta = {
             title:       'null',
             description: '',
             keywords:    '',
         };
-        this._layout = this.setup ? this.setup() : null;
+        this._loaderElement = this._loader() || null;
+        this._layoutElement = this._setup() || null;
 
-        if (this._layout) {
-            this.setProps({ content: this._layout });
+        if (this._layoutElement) {
+            this.setProps({ content: this._layoutElement, loader: this._loaderElement });
         }
     }
 
@@ -48,12 +51,41 @@ export default class Page extends Component {
         }
     }
 
-    protected setup? (): Component;
+    protected _setup() {
+        if (this.setup) return this.setup();
 
-    show(): void {
-        super.show();
+        return null;
+    }
 
-        this._installPageMeta();
+    public setup? (): Component;
+
+    protected _loader() {
+        if (this.loader) return this.loader();
+
+        return null;
+    }
+
+    public loader? (): Component;
+
+    destroyPage() {
+
+    }
+
+    hide(): void {
+        this.destroyPage();
+        this.getContent().remove();
+    }
+
+    showLoader(): void {
+        if (this._loaderElement) {
+            this._loaderElement.show();
+        }
+    }
+
+    hideLoader(): void {
+        if (this._loaderElement) {
+            this._loaderElement.hide();
+        }
     }
 
     render():void {

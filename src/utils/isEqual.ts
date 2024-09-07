@@ -18,14 +18,14 @@ function isArrayOrObject(value: unknown): value is [] | PlainObject {
     return isPlainObject(value) || isArray(value);
 }
 
-function isEqual(lhs: PlainObject, rhs: PlainObject) {
-    if (Object.keys(lhs).length !== Object.keys(rhs).length) {
+function isEqual(leftObject: PlainObject, rightObject: PlainObject) {
+    if (Object.keys(leftObject).length !== Object.keys(rightObject).length) {
         return false;
     }
 
     // eslint-disable-next-line no-restricted-syntax
-    for (const [key, value] of Object.entries(lhs)) {
-        const rightValue = rhs[key];
+    for (const [key, value] of Object.entries(leftObject)) {
+        const rightValue = rightObject[key];
 
         if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
             if (isEqual(value, rightValue)) {

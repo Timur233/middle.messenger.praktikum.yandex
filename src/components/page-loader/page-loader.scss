@@ -1,0 +1,14 @@
+.page-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    background-color: var(--loader-background);
+
+    &__spiner {
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+    }
+}

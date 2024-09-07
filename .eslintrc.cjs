@@ -76,5 +76,6 @@ module.exports = {
         'import/no-extraneous-dependencies': 'off',
         'import/no-unresolved':              'off',
         '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+        'class-methods-use-this':            ['warn', { exceptMethods: ['loader'] }],
     },
 };

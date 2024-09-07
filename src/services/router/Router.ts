@@ -1,6 +1,6 @@
 /* eslint-disable no-constructor-return */
 /* eslint-disable no-underscore-dangle */
-import Component from '../Component.ts';
+import Page from '../Page.ts';
 import Route from './Route.ts';
 
 export class Router {
@@ -30,16 +30,16 @@ export class Router {
         Router.__instance = this;
     }
 
-    use(pathname: string, block: new (...args: any[]) => Component) {
-        const route = new Route(pathname, block, { rootQuery: this._rootQuery });
+    use(pathname: string, page: new (...args: any[]) => Page) {
+        const route = new Route(pathname, page, { rootQuery: this._rootQuery });
 
         this.routes.push(route);
 
         return this;
     }
 
-    useNotFound(pathname: string, block: new (...args: any[]) => Component) {
-        this.use(pathname, block);
+    useNotFound(pathname: string, page: new (...args: any[]) => Page) {
+        this.use(pathname, page);
 
         this._notFoundRoutePath = pathname;
 
@@ -63,6 +63,7 @@ export class Router {
 
         if (route && route instanceof Route) {
             this._currentRoute = route;
+
             route.render();
         } else if (this._notFoundRoutePath !== null && this._notFoundRoutePath !== '') {
             this.go(this._notFoundRoutePath);

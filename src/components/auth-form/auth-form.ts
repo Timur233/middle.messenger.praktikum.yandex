@@ -1,4 +1,5 @@
 import './auth-form.scss';
+import escapeHTML from '../../utils/escapeHTML.ts';
 import template from './auth-form.tmpl.ts';
 import Component from '../../services/Component.ts';
 import FormGroup from '../form-group/form-group.ts';
@@ -42,7 +43,7 @@ class Form extends Component {
                         .childs.find(i => i.id === fieldId[1]) as FormGroup;
 
                     if (fieldComponent instanceof FormGroup) {
-                        acc[fieldComponent.props.name as string] = fieldComponent.getValue();
+                        acc[fieldComponent.props.name as string] = escapeHTML(fieldComponent.getValue() as string);
                     }
                 }
 

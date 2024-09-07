@@ -7,11 +7,11 @@ export default abstract class BaseAPI {
         this.http = new HTTPTransport();
     }
 
-    public create?(data: unknown): Promise<unknown>;
+    public get?(data: Record<string, unknown>): Promise<unknown>;
 
-    public request?(id?: string | number): Promise<unknown>;
+    public create?(data: Record<string, unknown>): Promise<unknown>;
 
-    public update?(id: string | number, data: unknown): Promise<unknown>;
+    public update?(data: Record<string, unknown>): Promise<unknown>;
 
     public delete?(id: string | number): Promise<unknown>;
 }

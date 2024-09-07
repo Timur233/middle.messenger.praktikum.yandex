@@ -17,10 +17,13 @@ type Data = Record<string, unknown>;
 
 type Options = {
     method?: string;
-    data?: Data;
+    data?: Data | FormData;
     timeout?: number;
-    headers?: Headers
+    headers?: Headers;
+    responseType?: string
 };
+
+type XMLHttpRequestResponseType = '' | 'arraybuffer' | 'blob' | 'document' | 'json' | 'text';
 
 type HTTPMethod = (url: string, options?: Options) => Promise<HTTPResponse>
 
@@ -52,10 +55,10 @@ class HTTPTransport {
     ): Promise<HTTPResponse> {
         const { method } = options;
         const headers: Headers | undefined = options?.headers;
-        const data: Data | undefined = options?.data;
+        const data: Data | FormData | undefined = options?.data;
 
-        if (method === this.METHODS.GET && data !== undefined) {
-            url = HTTPTransport.getFormatGetParams(url, data);
+        if (method === this.METHODS.GET && !(data instanceof FormData) && data !== undefined) {
+            if (typeof data === 'object') url = HTTPTransport.getFormatGetParams(url, data);
         }
 
         return new Promise((resolve, reject) => {
@@ -70,12 +73,14 @@ class HTTPTransport {
 
             xhr.timeout = timeout;
             xhr.withCredentials = withCredentials;
+
+            xhr.responseType = options?.responseType as XMLHttpRequestResponseType || '';
             HTTPTransport.setHeaders(xhr, headers || {});
 
             if (method === METHODS.GET) {
                 xhr.send();
             } else {
-                xhr.send(JSON.stringify(data || {}));
+                xhr.send(data instanceof FormData ? data : JSON.stringify(data || {}));
             }
         });
     }

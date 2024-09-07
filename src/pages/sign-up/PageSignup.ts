@@ -1,13 +1,19 @@
+import { setCookie } from '../../utils/cookie.ts';
+
+import AuthAPI from '../../api/AuthAPI.ts';
+import { ErrorResponseType, SignupRequestType } from '../../api/types.ts';
+
+import Page from '../../services/Page.ts';
+import Component from '../../services/Component.ts';
 import Button from '../../components/button/button.ts';
 import Form from '../../components/auth-form/auth-form.ts';
 import FormGroup from '../../components/form-group/form-group.ts';
-import Page from '../../services/Page.ts';
-import Component from '../../services/Component.ts';
-import signupAPI from './PageSignup.api.ts';
+import PageLoader from '../../components/page-loader/page-loader.ts';
+
 import router from '../../services/router/Router.ts';
 
 export default class PageSignup extends Page {
-    protected setup(): Component {
+    setup(): Component {
         const formFields: { [key: string]: FormGroup } = {
             email: new FormGroup({
                 label:       'Email',
@@ -182,13 +188,13 @@ export default class PageSignup extends Page {
             }),
         };
 
-        const signUpButton = new Button({
+        const signupButton = new Button({
             classList: 'button--primary',
             text:      'Зарегестрироваться',
             type:      'submin',
         });
 
-        const loginButton = new Button({
+        const signinButton = new Button({
             classList: 'button--outline',
             text:      'Вход',
             type:      'button',
@@ -202,20 +208,31 @@ export default class PageSignup extends Page {
         const form = new Form({
             title:   'Регистрация',
             fields:  formFields,
-            buttons: [signUpButton, loginButton],
+            buttons: [signupButton, signinButton],
             methods: {
                 onSubmit: (e: Event | undefined) => {
                     if (e instanceof Event) e.preventDefault();
 
                     if (form.validate() === false) {
-                        const data = form.serialize();
+                        const data = form.serialize() as SignupRequestType;
 
-                        signupAPI
-                            .signup(data)
+                        this.showLoader();
+
+                        PageSignup.signupUser(data)
                             .then((res) => {
-                                if (res.status === 200) {
-                                    router.go('/login');
+                                if (res.status === 400 || res.status === 409) {
+                                    const json = res.json() as ErrorResponseType;
+
+                                    form.setProps({ message: `Ошибка! ${json ? json.reason : 'Неизвестная ошибка'}` });
                                 }
+
+                                if (res.status === 200) {
+                                    setCookie('isAuthorized', '1');
+                                    router.go('/');
+                                }
+                            })
+                            .finally(() => {
+                                this.hideLoader();
                             });
                     }
                 },
@@ -229,5 +246,15 @@ export default class PageSignup extends Page {
         });
 
         return form;
+    }
+
+    loader(): Component {
+        const loader = new PageLoader();
+
+        return loader;
+    }
+
+    static signupUser(data: SignupRequestType) {
+        return AuthAPI.signup(data);
     }
 }

@@ -17,6 +17,14 @@ class HTTPResponse {
         return this.xhr.responseText;
     }
 
+    blob(): Blob {
+        if (this.xhr.responseType === 'blob') {
+            return this.xhr.response as Blob;
+        }
+
+        return new Blob([this.xhr.response]);
+    }
+
     get headers(): { [key: string]: string } {
         const headers: { [key: string]: string } = {};
         const rawHeaders: string[] = this.xhr.getAllResponseHeaders().trim().split(/[\r\n]+/);
