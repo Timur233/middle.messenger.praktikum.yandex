@@ -6,8 +6,6 @@ import {
     Props, Methods, ChildComponents, ComponentDataType,
 } from './types.ts';
 import PropsManager from './PropsManager.ts';
-import isUUID from '../utils/isUUID.ts';
-import isEqual from '../utils/isEqual.ts';
 
 export default class Component <ComponentData extends ComponentDataType = {}> {
     static EVENTS: { [key: string]: string } = {
@@ -15,8 +13,6 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
         FLOW_CDM:   'flow:component-did-mount',
         FLOW_CDU:   'flow:component-did-update',
         FLOWrender: 'flow:render',
-        FLOW_BR:    'flow:component-before-render',
-        FLOW_AR:    'flow:component-after-render',
     };
 
     id: string;
@@ -50,16 +46,15 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
         eventBus.on(Component.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
         eventBus.on(Component.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
         eventBus.on(Component.EVENTS.FLOWrender, this.render.bind(this));
-        eventBus.on(Component.EVENTS.FLOW_BR, this._componentBeforeRender.bind(this));
-        eventBus.on(Component.EVENTS.FLOW_AR, this._componentAfterRender.bind(this));
     }
 
-    // eslint-disable-next-line class-methods-use-this
     private _makePropsProxy(baseProps: Props): Props {
         return new Proxy(baseProps, {
             get: (target: Props, property: string): unknown => target[property],
             set: (target: Props, property: string, value: unknown): boolean => {
                 target[property] = value;
+
+                this.render();
 
                 return true;
             },
@@ -87,8 +82,8 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
         const prevProps = { ...this.props };
         const props = new PropsManager(nextProps);
 
-        this.childs = [...this.childs, ...props.childs];
         Object.assign(this.props, props.props);
+        this.childs = [...this.childs, ...props.childs];
 
         this.dispatchComponentDidUpdate(prevProps, this.props);
     };
@@ -104,28 +99,11 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
         this._eventBus().emit(Component.EVENTS.FLOW_CDM);
     }
 
-    componentDidUpdate(_prevProps?: Props | unknown, _nextProps?: Props | unknown) {
-        if (_prevProps && _nextProps && !isEqual(_prevProps, _nextProps)) {
-            this.render();
-        }
-    }
+    // eslint-disable-next-line class-methods-use-this, no-unused-vars
+    componentDidUpdate(_prevProps?: Props | unknown, _nextProps?: Props | unknown) { }
 
     private _componentDidUpdate(prevProps: Props | unknown, nextProps: Props | unknown):void {
         this.componentDidUpdate(prevProps, nextProps);
-    }
-
-    // eslint-disable-next-line class-methods-use-this, no-unused-vars
-    componentBeforeRender() {}
-
-    private _componentBeforeRender(): void {
-        this.componentBeforeRender();
-    }
-
-    // eslint-disable-next-line class-methods-use-this, no-unused-vars
-    componentAfterRender() {}
-
-    private _componentAfterRender(): void {
-        this.componentAfterRender();
     }
 
     dispatchComponentDidUpdate(prevProps: Props, nextProps: Props):void {
@@ -185,8 +163,6 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
     }
 
     compile(template: string, props: Props):void {
-        this._eventBus().emit(Component.EVENTS.FLOW_BR);
-
         if (this._element instanceof HTMLElement) {
             const templateNode:HTMLTemplateElement = document.createElement('template');
             const templateData: Props = { ...props };
@@ -197,23 +173,23 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
 
             this.removeEvents();
 
-            if (this._element) {
-                this._element.parentNode?.replaceChild(rootElement, this._element);
-                this._element.remove();
-                this._element = rootElement;
-                this._element.setAttribute('data-id', this.id);
+            setTimeout(() => {
+                if (this._element) {
+                    this._element.parentNode?.replaceChild(rootElement, this._element);
+                    this._element.remove();
+                    this._element = rootElement;
+                    this._element.setAttribute('data-id', this.id);
 
-                this.childs.forEach((child: Component) => {
-                    const stub = this._element?.querySelector(`[data-id="${child.id}"]`);
+                    this.childs.forEach((child: Component) => {
+                        const stub = this._element?.querySelector(`[data-id="${child.id}"]`);
 
-                    stub?.replaceWith(child.getContent());
-                    child.dispatchComponentDidMount();
-                });
+                        stub?.replaceWith(child.getContent());
+                        child.dispatchComponentDidMount();
+                    });
 
-                this.addEvents();
-            }
-
-            this._eventBus().emit(Component.EVENTS.FLOW_AR);
+                    this.addEvents();
+                }
+            }, 0);
         }
     }
 
@@ -229,24 +205,6 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
         return this._element as HTMLElement;
     }
 
-    getChild(string: string): Component | undefined {
-        let componentId = '';
-
-        if (isUUID(string)) {
-            componentId = string;
-        } else {
-            const regex: RegExp = /data-id="([^"]*)"/;
-            const match: RegExpMatchArray| null = string.match(regex);
-
-            if (match) {
-                // eslint-disable-next-line prefer-destructuring
-                componentId = match[1];
-            }
-        }
-
-        return this.childs.find((item: Component) => item.id === componentId);
-    }
-
     show():void {
         if (this._element instanceof HTMLElement) {
             addStyles(this._element, { display: '' });
@@ -259,32 +217,7 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
         }
     }
 
-    remove():void {
-        if (this._element instanceof HTMLElement) {
-            this._element.remove();
-        }
-    }
-
-    static createELement(
-        tag: string,
-        id: string | number | null = null,
-        classList: string | null = null,
-        innerHTML: string | null = null,
-    ): HTMLElement {
-        const element: HTMLElement = document.createElement(tag);
-
-        if (id) element.id = String(id);
-
-        if (classList) {
-            const classNames: string[] = classList.split(' ');
-
-            classNames.forEach((name) => {
-                element.classList.add(name);
-            });
-        }
-
-        if (innerHTML) element.innerHTML = innerHTML;
-
-        return element;
+    static createELement(tag: string): HTMLElement {
+        return document.createElement(tag);
     }
 }

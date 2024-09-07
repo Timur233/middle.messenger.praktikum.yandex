@@ -11,23 +11,15 @@ export default function template() {
                             {{title}}
                         </div>
                         <div class="chat-info__more">
-                            <button class="chat-info__more-btn" events="{'click': 'showMoreDropdown'}">
+                            <button class="chat-info__more-btn">
                                 <svg class="svg-icon" style="height: 16px;">
                                     <use xlink:href="/assets/icons.svg#more-btn"></use>
                                 </svg>
                             </button>
-                            <div class="chat-info__dropdown more-dropdown">
-                                <span
-                                    class="more-dropdown__item more-dropdown__item--delete"
-                                    events="{'click': 'deleteChat'}"
-                                >
-                                    Удалить чат
-                                </span>
-                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="messenger-chat__history" events="{'scroll': 'onScrollHistory'}">
+                <div class="messenger-chat__history">
                     <div class="chat-history">
                         {{#each messages}}
                             {{#if isMessageType}}
@@ -48,21 +40,30 @@ export default function template() {
                     <form action="/" class="messenger-form">
                         <div class="messenger-form__source">
                             <div class="source-dropdown">
-                                <div class="source-dropdown__item" events="{'click': 'selectFile'}">
+                                <div class="source-dropdown__item">
                                     <div class="source-dropdown__item-icon">
                                         <svg class="svg-icon" style="height: 18px;">
                                             <use xlink:href="/assets/icons.svg#source-image"></use>
                                         </svg>
                                     </div>
-                                    <span>Изображение</span>
+                                    <span>Фото или Видео</span>
                                 </div>
-                                <input
-                                    id="file-uploader-input"
-                                    type="file"
-                                    accept=".jpeg,.jpg,.png,.gif,.webp"
-                                    hidden
-                                    events="{'change': 'onSelectFile'}"
-                                >
+                                <div class="source-dropdown__item">
+                                    <div class="source-dropdown__item-icon">
+                                        <svg class="svg-icon" style="height: 18px;">
+                                            <use xlink:href="/assets/icons.svg#source-file"></use>
+                                        </svg>
+                                    </div>
+                                    <span>Файл</span>
+                                </div>
+                                <div class="source-dropdown__item">
+                                    <div class="source-dropdown__item-icon">
+                                        <svg class="svg-icon" style="height: 18px;">
+                                            <use xlink:href="/assets/icons.svg#source-location"></use>
+                                        </svg>
+                                    </div>
+                                    <span>Локация</span>
+                                </div>
                             </div>
                             <button class="messenger-source-btn" type="button" events="{'click': 'showDropdown'}">
                                 <svg class="messenger-source-btn__icon svg-icon" style="height: 32px;">
@@ -75,16 +76,11 @@ export default function template() {
                                 name="message"
                                 class="messenger-text-field"
                                 placeholder="Сообщение"
-                                events="{'input': 'onInput', 'keydown': 'onKeydown'}"
+                                events="{'input': 'onInput'}"
                             ></textarea>
                         </div>
                         <div class="messenger-form__send">
-                            <button
-                                type="submit"
-                                class="messenger-send-btn"
-                                title="(enter) - отправить, (shift + enter) - сброс сроки"
-                                events="{'click': 'sendMessage'}"
-                            >
+                            <button type="submit" class="messenger-send-btn" events="{'click': 'sendMessage'}">
                                 <svg class="svg-icon" style="width: 13px; height: 12px">
                                     <use xlink:href="/assets/icons.svg#send-btn"></use>
                                 </svg>

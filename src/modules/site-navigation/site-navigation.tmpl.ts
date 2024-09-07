@@ -10,9 +10,9 @@ export default function template() {
                 <ul class="pages-list">
                     {{#each links}}
                         <li class="pages-list__item">
-                            <span class="pages-list__link" data-link="{{link}}" events="{ 'click': 'onClick' }">
+                            <a class="pages-list__link" href="{{link}}">
                                 {{title}}
-                            </span>
+                            </a>
                         </li>
                     {{/each}}
                 </ul>
