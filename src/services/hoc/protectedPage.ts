@@ -1,4 +1,5 @@
 import { getCookie } from '../../utils/cookie.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Page from '../Page.ts';
 import router from '../router/Router.ts';
 
@@ -9,8 +10,6 @@ export default function protectPage(PageClass: typeof Page)
             if (getCookie('isAuthorized') === '1') {
                 return this?.setup ? this?.setup() : null;
             }
-
-            router.go('/sing-in');
 
             return null;
         }

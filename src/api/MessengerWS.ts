@@ -35,7 +35,7 @@ export default class MessengerWS {
     private _onClose(): void {
         this._wsTransport.addListener('close', (event) => {
             if (!event.wasClean) {
-                console.log(`Код: ${event.code} | Причина: ${event.reason}`);
+                throw new Error(`Код: ${event.code} | Причина: ${event.reason}`);
             }
 
             clearInterval(this._pingPongInterval as number);
@@ -44,7 +44,7 @@ export default class MessengerWS {
 
     private _onError(): void {
         this._wsTransport.addListener('error', (event) => {
-            console.log('Ошибка', event.message);
+            throw new Error(`Ошибка: ${event.message}`);
         });
     }
 
