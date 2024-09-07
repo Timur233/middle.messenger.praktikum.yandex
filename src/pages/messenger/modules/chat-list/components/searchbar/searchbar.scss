@@ -43,6 +43,19 @@
         transition: left 0.18s ease-out, transform 0.18s;
     }
 
+    &__spiner {
+        display: none;
+        position: absolute;
+        right: 12px;
+        top: 0;
+        padding: 2px 0;
+
+        & > svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
     &--hide-placeholder {
         & .search-placeholder {
             left: 20px;
@@ -51,6 +64,12 @@
 
         & .search-placeholder__text {
             opacity: 0;
+        }
+    }
+
+    &--loading {
+        & .searchbar__spiner {
+            display: block;
         }
     }
 }

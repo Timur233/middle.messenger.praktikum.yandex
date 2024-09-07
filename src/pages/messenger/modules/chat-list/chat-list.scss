@@ -44,3 +44,12 @@
         @include scroll-settings;
     }
 }
+
+.chats-list {
+    &__title {
+        border-bottom: 1px solid var(--border-color);
+        font-size: 12px;
+        padding: 8px 0;
+        margin: 16px 8px 8px;
+    }
+}

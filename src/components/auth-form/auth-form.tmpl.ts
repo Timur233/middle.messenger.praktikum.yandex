@@ -6,6 +6,11 @@ export default function template() {
                 {{#each fields}}
                     {{{this}}}
                 {{/each}}
+                {{#if message}}
+                    <div class="auth-form__messages">
+                        {{message}}
+                    </div>
+                {{/if}}
                 <div class="form-actions">
                     {{#each buttons}}
                         {{{this}}}

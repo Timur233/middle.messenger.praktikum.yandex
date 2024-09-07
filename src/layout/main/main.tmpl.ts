@@ -6,7 +6,7 @@ export default function template() {
                     {{{sidebar}}}
                 </div>
             {{/if}}
-            <div class="main-layout__content main-page__content">
+            <div class="main-layout__content">
                 {{#if header }}
                     <div class="main-layout__header">
                         {{{header}}}
