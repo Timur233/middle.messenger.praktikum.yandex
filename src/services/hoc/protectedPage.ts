@@ -1,4 +1,5 @@
 import { getCookie } from '../../utils/cookie.ts';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import Page from '../Page.ts';
 import router from '../router/Router.ts';
 

@@ -17,7 +17,7 @@ export default function merge(leftObject: Indexed, rightObject: Indexed): Indexe
             } else {
                 leftObject[prop] = rightObject[prop];
             }
-        } catch (e) {
+        } catch {
             leftObject[prop] = rightObject[prop];
         }
     }

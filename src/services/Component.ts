@@ -54,13 +54,12 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
         eventBus.on(Component.EVENTS.FLOW_AR, this._componentAfterRender.bind(this));
     }
 
+    // eslint-disable-next-line class-methods-use-this
     private _makePropsProxy(baseProps: Props): Props {
         return new Proxy(baseProps, {
             get: (target: Props, property: string): unknown => target[property],
             set: (target: Props, property: string, value: unknown): boolean => {
                 target[property] = value;
-
-                // this.render();
 
                 return true;
             },

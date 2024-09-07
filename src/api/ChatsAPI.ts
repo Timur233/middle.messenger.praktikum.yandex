@@ -6,6 +6,8 @@ import ResourcesAPI from './ResourcesAPI.ts';
 import router from '../services/router/Router.ts';
 
 export class ChatsAPI extends BaseAPI {
+    public resourcesAPI = ResourcesAPI;
+
     public get(data: Record<string, unknown>) {
         return this.http.get('/chats', {
             headers: { 'Content-type': 'application/json' },
@@ -103,11 +105,11 @@ export class ChatsAPI extends BaseAPI {
     }
 
     public downloadAvatar(path: string) {
-        return ResourcesAPI.download(path);
+        return this.resourcesAPI.download(path);
     }
 
     public uploadImage(data: FormData) {
-        return ResourcesAPI.upload(data);
+        return this.resourcesAPI.upload(data);
     }
 }
 

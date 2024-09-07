@@ -67,6 +67,7 @@ export default class Page extends Component {
 
     public loader? (): Component;
 
+    // eslint-disable-next-line class-methods-use-this
     destroyPage() {
 
     }
