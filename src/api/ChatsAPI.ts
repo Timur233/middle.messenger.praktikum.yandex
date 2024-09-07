@@ -1,0 +1,114 @@
+import BaseAPI from './BaseAPI.ts';
+import {
+    ChatsMessagesTokenResponseType, ChatsResponseType, CreateChatRequestType, CreateChatResponseType,
+} from './types.ts';
+import ResourcesAPI from './ResourcesAPI.ts';
+import router from '../services/router/Router.ts';
+
+export class ChatsAPI extends BaseAPI {
+    public get(data: Record<string, unknown>) {
+        return this.http.get('/chats', {
+            headers: { 'Content-type': 'application/json' },
+            data,
+        })
+            .then((res) => {
+                if (res.status === 401) router.go('/logout');
+
+                return res;
+            })
+            .then(res => res.json() as ChatsResponseType[])
+            .catch(() => {
+                router.go('/error');
+            });
+    }
+
+    public create(data: CreateChatRequestType) {
+        return this.http.post('/chats', {
+            headers: { 'Content-type': 'application/json' },
+            data,
+        })
+            .then((res) => {
+                if (res.status === 401) router.go('/logout');
+
+                return res;
+            })
+            .then(res => res.json() as CreateChatResponseType)
+            .catch(() => {
+                router.go('/error');
+            });
+    }
+
+    public delete(id: number) {
+        return this.http.delete('/chats', {
+            headers: { 'Content-type': 'application/json' },
+            data:    {
+                chatId: id,
+            },
+        })
+            .then((res) => {
+                if (res.status === 401) router.go('/logout');
+
+                return res;
+            })
+            .then(res => res.json())
+            .catch(() => {
+                router.go('/error');
+            });
+    }
+
+    public addUsers(chatId: number, users: number[]) {
+        return this.http.put('/chats/users', {
+            headers: { 'Content-type': 'application/json' },
+            data:    { users, chatId },
+        })
+            .then((res) => {
+                if (res.status === 401) router.go('/logout');
+
+                return res;
+            })
+            .then(res => res.text())
+            .catch(() => {
+                router.go('/error');
+            });
+    }
+
+    public addAvatar(formData: FormData) {
+        return this.http.put('/chats/avatar', {
+            data: formData,
+        })
+            .then((res) => {
+                if (res.status === 401) router.go('/logout');
+
+                return res;
+            })
+            .then(res => res.text())
+            .catch(() => {
+                router.go('/error');
+            });
+    }
+
+    public getToken(id: number) {
+        return this.http.post(`/chats/token/${id}`, {
+            headers: { 'Content-type': 'application/json' },
+        })
+            .then((res) => {
+                if (res.status === 401) router.go('/logout');
+
+                return res;
+            })
+            .then(res => res.json() as ChatsMessagesTokenResponseType)
+            .catch(() => {
+                router.go('/error');
+            });
+    }
+
+    public downloadAvatar(path: string) {
+        return ResourcesAPI.download(path);
+    }
+
+    public uploadImage(data: FormData) {
+        return ResourcesAPI.upload(data);
+    }
+}
+
+export default new ChatsAPI();

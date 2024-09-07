@@ -1,9 +1,9 @@
 import Component from './Component.ts';
 import {
-    Methods, Props, ChildComponents, ComponentData,
+    Methods, Props, ChildComponents, ComponentDataType,
 } from './types.ts';
 
-class PropsManager {
+class PropsManager <ComponentData extends ComponentDataType> {
     componentData: ComponentData;
 
     methods: Methods;

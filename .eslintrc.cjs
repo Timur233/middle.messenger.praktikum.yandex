@@ -12,10 +12,6 @@ module.exports = {
         indent:       [
             'error', 4, { SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] },
         ],
-        'import/no-unresolved': [
-            2,
-            { caseSensitive: false },
-        ],
         'key-spacing':     ['error', { align: 'value' }],
         'no-multi-spaces': [
             'error',
@@ -76,6 +72,10 @@ module.exports = {
                 next:      'export',
             },
         ],
-        'arrow-parens': ['error', 'as-needed', { requireForBlockBody: true }],
+        'arrow-parens':                      ['error', 'as-needed', { requireForBlockBody: true }],
+        'import/no-extraneous-dependencies': 'off',
+        'import/no-unresolved':              'off',
+        '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+        'class-methods-use-this':            ['warn', { exceptMethods: ['loader'] }],
     },
 };
