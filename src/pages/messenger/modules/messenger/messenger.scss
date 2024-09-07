@@ -1,36 +1,10 @@
 /* stylelint-disable selector-class-pattern */
 @import '../../vars';
 
-@mixin dropdown-wrapper {
-    flex-direction: column;
-    gap: 12px;
-    width:  155px;
-    background-color: var(--white-color);
-    border-radius: 8px;
-    box-shadow: var(--base-box-shadow);
-    z-index: 1;
-}
-
-@mixin dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 12px;
-    padding: 12px;
-    cursor: pointer;
-    user-select: none;
-
-    &:hover {
-        color: var(--primary-color);
-    }
-}
-
 .messenger-chat {
-    width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-    position: relative;
 
     &__unselected {
         height: 100%;
@@ -51,7 +25,6 @@
     &__history {
         flex: 1 1 auto;
         overflow: auto;
-        padding: 8px;
 
         @include scroll-settings;
     }
@@ -61,21 +34,6 @@
         display: block;
         background-color: var(--white-color);
         border-top: 1px solid var(--border-color);
-    }
-
-    &__loader {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        inset: 0;
-        background-color: var(--loader-background);
-    }
-
-    &__spiner {
-        display: inline-block;
-        width: 80px;
-        height: 80px;
     }
 }
 
@@ -98,43 +56,19 @@
     }
 
     &__more {
-        position: relative;
         margin-left: auto;
     }
 
     &__more-btn {
         padding: 4px 12px;
-        cursor: pointer;
-    }
-}
-
-.more-dropdown {
-    display: none;
-
-    @include dropdown-wrapper;
-
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-
-    &--show {
-        display: block;
-    }
-
-    &__item {
-        cursor: pointer;
-
-        @include dropdown-item;
-
-        &--delete {
-            color: var(--error-color);
-        }
     }
 }
 
 .chat-history {
+    padding: 12px;
+    height: 100%;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: baseline;
     gap: 12px;
 
@@ -199,19 +133,32 @@
 
 .source-dropdown {
     display: none;
-
-    @include dropdown-wrapper;
-
+    flex-direction: column;
+    gap: 12px;
+    width:  155px;
     position: absolute;
+    padding: 12px;
     left: 0;
     bottom: calc(100% + 26px);
+    background-color: var(--white-color);
+    border-radius: 8px;
+    box-shadow: var(--base-box-shadow);
 
     &--show {
         display: flex;
     }
 
     &__item {
-        @include dropdown-item;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 12px;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover {
+            color: var(--primary-color);
+        }
     }
 }
 

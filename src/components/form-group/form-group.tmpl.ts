@@ -15,7 +15,6 @@ export default function template() {
                 name="{{name}}"
                 class="form-group__input input {{#if hasError}}input--error{{/if}}"
                 placeholder="{{ placeholder }}"
-                autocomplete="{{#if autocomplete}}{{autocomplete}}{{else}}off{{/if}}"
                 type="{{#if type}}{{type}}{{else}}text{{/if}}"
                 value="{{value}}"
                 events="{'blur': 'validate', 'input': 'mask'}"

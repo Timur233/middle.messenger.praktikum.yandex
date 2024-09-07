@@ -9,26 +9,19 @@ class Searchbar extends Component {
 
     componentDidUpdate(): void {
         this.togglePlaceholder();
-        this.render();
     }
 
     togglePlaceholder() {
-        const input: HTMLInputElement = this.getContent('input.searchbar__input') as HTMLInputElement;
+        const input = this.getContent('input.searchbar__input');
         const searchBar = this.getContent();
 
-        if (input) {
-            input.addEventListener('focus', () => {
-                searchBar.classList.add('searchbar--hide-placeholder');
-            });
+        input.addEventListener('focus', () => {
+            searchBar.classList.add('searchbar--hide-placeholder');
+        });
 
-            input.addEventListener('blur', () => {
-                if (input.value === '') searchBar.classList.remove('searchbar--hide-placeholder');
-            });
-        }
-    }
-
-    clearValue() {
-        this.setProps({ value: '' });
+        input.addEventListener('blur', () => {
+            searchBar.classList.remove('searchbar--hide-placeholder');
+        });
     }
 
     render():void {
