@@ -11,8 +11,6 @@ export default function protectPage(PageClass: typeof Page)
                 return this?.setup ? this?.setup() : null;
             }
 
-            router.go('/sing-in');
-
             return null;
         }
 
