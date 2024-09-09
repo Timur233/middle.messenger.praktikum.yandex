@@ -37,7 +37,7 @@ const pageData = {
 
 export default defineConfig({
     root:  'src',
-    base:  './',
+    base:  '/',
     build: {
         rollupOptions: {
             input: {
