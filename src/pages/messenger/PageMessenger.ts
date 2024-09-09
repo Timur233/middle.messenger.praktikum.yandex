@@ -414,7 +414,7 @@ export default class PageMessenger extends Page {
 
                     if (searchInput.value) {
                         userFinder.getContent().classList.add('user-finder--loading');
-                        PageMessenger.searchUsers(searchInput.value)
+                        PageMessenger.searchUsers(escapeHTML(searchInput.value))
                             .then((users) => {
                                 userFinder.setProps({ usersResult: users, searchInputValue: searchInput.value });
                                 userFinder.getContent().classList.remove('user-finder--loading');
@@ -530,12 +530,17 @@ export default class PageMessenger extends Page {
                                     await ChatsAPI.addAvatar(data);
                                 }
                             } else {
-                                chatId = await PageMessenger.createChat(chatTitle, users.map(i => i.id), chatNewAvatar);
+                                chatId = await PageMessenger.createChat(
+                                    escapeHTML(chatTitle),
+                                    users.map(i => i.id),
+                                    chatNewAvatar,
+                                );
                             }
+
+                            store.setState('activeChatId', chatId);
 
                             PageMessenger.getChatList()
                                 .then((chatsData: ChatDataType[]) => {
-                                    store.setState('activeChatId', chatId);
                                     store.setState('chatList', chatsData);
                                     store.setState('userList', []);
 
