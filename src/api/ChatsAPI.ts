@@ -111,7 +111,8 @@ export class ChatsAPI extends BaseAPI {
 
     public addAvatar(formData: FormData) {
         return this.http.put('/chats/avatar', {
-            data: formData,
+            data:    formData,
+            timeout: 20000,
         })
             .then((res) => {
                 if (res.status === 401) router.go('/logout');
