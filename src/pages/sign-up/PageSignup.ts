@@ -228,7 +228,7 @@ export default class PageSignup extends Page {
 
                                 if (res.status === 200) {
                                     setCookie('isAuthorized', '1');
-                                    router.go('/');
+                                    document.location = '/';
                                 }
                             })
                             .finally(() => {
