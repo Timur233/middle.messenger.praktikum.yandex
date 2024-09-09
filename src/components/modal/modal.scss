@@ -1,0 +1,37 @@
+.main-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--backdrop-color);
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 28px;
+        min-width: 400px;
+        padding: 20px;
+        border-radius: 12px;
+        background-color: var(--white-color);
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 4px 0 12px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    &__footer {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    &__close-btn {
+        cursor: pointer;
+    }
+}

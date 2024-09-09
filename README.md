@@ -1,7 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/2a668cd5-3654-4c56-a540-19a633e37d11/deploy-status)](https://app.netlify.com/sites/praktikum-timur233/deploys)
 
 
-## Проектная работа 2-й спринт
+## Проектная работа 3-й спринт
 
 Ссылка на развернутое приложение: https://praktikum-timur233.netlify.app/
 
@@ -9,17 +9,16 @@
 
 ## Описание
 
-Макет отрисовал отталкиваясь от представленного макета на курсе и собственных наработок.
-
-Отверстал все страницы по макету, на главную добавил список ссылок на все страницы для удобной навигации. По возможности старался выносить некоторые блоки, которые возможно будут использоваться где-то еще в проекте в отдельные компоненты. 
-
-Подключил шаблонизатор Handlebars. Так как я использовал подход при котором компиляция и рендеринг происходит на сервере, пришлось разместить все компоненты сайта в одной папке.
-
-Внедрил компонентный подход, классы Сomponent, EventBus, PropsManager
-
-Добавил класс для работы с сервером. HTTPTransport, HTTPResponse
-
-Добавил в проект линтеры Eslint, Stylelint
+- Макет отрисовал отталкиваясь от представленного макета на курсе и собственных наработок.
+- Отверстал все страницы по макету, на главную добавил список ссылок на все страницы для удобной навигации. По возможности старался выносить некоторые блоки, которые возможно будут использоваться где-то еще в проекте в отдельные компоненты. 
+- Подключил шаблонизатор Handlebars. Так как я использовал подход при котором компиляция и рендеринг происходит на сервере, пришлось разместить все компоненты сайта в одной папке.
+- Внедрил компонентный подход, классы Сomponent, EventBus, PropsManager
+- Добавил класс для работы с сервером. HTTPTransport, HTTPResponse
+- Добавил в проект линтеры Eslint, Stylelint
+- Создал класс для работы страниц
+- Внедрил АПИ чата 
+- Пересмотрел список страниц
+- Дополнил нужными компонентами (preloader, modal)
 
 ## Структура проекта
 
@@ -27,6 +26,14 @@
 project-root/
 │
 ├── src/
+│   ├── api
+│   │   ├── AuthAPI.ts
+│   │   ├── BaseAPI.ts
+│   │   ├── ChatsAPI.ts
+│   │   ├── MessingerWS.ts
+│   │   ├── types.ts
+│   │   ├── UserAPI.ts
+│   │   └── ResourcesAPI.ts
 │   ├── components/
 │   │   ├── auth-form/
 │   │   │   ├── auth-form.scss
@@ -54,20 +61,19 @@ project-root/
 │   │   │   ├── components/
 │   │   │   ├── modules/
 │   │   │   │   └── module/
-│   │   │   │   │   └── components/
-│   │   │   ├── style.scss
-│   │   │   ├── index.ts
-│   │   │   └── index.html
+│   │   │   │       └── components/
+│   │   │   └── PageMessenger.ts
 │   │   ├── error-not-found
 │   │   ├── error-server
-│   │   ├── login
-│   │   ├── profile
-│   │   ├── profile-change-data
-│   │   ├── http-transport-playground
-│   │   ├── profile-change-password
+│   │   ├── settings
+│   │   ├── settings-change-data
+│   │   ├── settings-change-password
+│   │   ├── sign-in
 │   │   └── sign-up
+│   ├── services/
+│   ├── styles/
+│   ├── utils/
 │   ├── index.html
-│   ├── style.scss
 │   └── index.ts
 │
 ├── static/

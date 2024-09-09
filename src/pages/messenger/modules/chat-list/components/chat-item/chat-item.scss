@@ -24,6 +24,10 @@
         margin-right: 12px;
     }
 
+    &__preview {
+        width: calc(100% - 60px);
+    }
+
     &__user-logo {
         @include chat-logo;
     }
@@ -36,9 +40,6 @@
     }
 
     &__desc {
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
         text-overflow: ellipsis;
         max-height: 26px;
         font-size: 10px;
@@ -66,5 +67,6 @@
         font-size: 10px;
         font-weight: 400;
         margin-bottom: 8px;
+        text-align: right;
     }
 }
