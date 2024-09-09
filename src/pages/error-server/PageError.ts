@@ -14,7 +14,7 @@ export default class PageError extends Page {
 
         this.setProps({ classList: 'error-page__wrapper' });
         this.setPageMeta({
-            title: '404 - Вы потерялись',
+            title: '500 - Ошибка на сервере',
         });
 
         return message;

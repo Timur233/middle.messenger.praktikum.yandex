@@ -8,6 +8,8 @@ $searchbar-border-color: #EFEFEF;
 $scrollbar-bg: var(--white-color);
 $scrollbar-thumb-bg: #a5a5a5;
 $scrollbar-thumb-hover-bg: #808080;
+$light-gray: #dfdfdf;
+$search-users-hover: rgb(244 244 244);
 
 @mixin chat-logo {
     display: block;

@@ -21,6 +21,16 @@ export type ErrorResponseType = {
     reason: string
 }
 
+export type ChatUsersResponseType = {
+    id: number;
+    display_name: string;
+    first_name: string;
+    second_name: string;
+    login: string;
+    avatar: string;
+    role: string;
+}
+
 export type UserResponseType = {
     id: number;
     display_name: string;

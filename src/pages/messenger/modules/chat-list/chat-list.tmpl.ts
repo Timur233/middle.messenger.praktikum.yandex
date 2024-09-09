@@ -25,6 +25,9 @@ export default function template() {
                     {{/each}}
                 {{/if}}
             </div>
+            <div class="chats__footer">
+                {{{createButton}}}
+            </div>
         </div>
     `;
 }

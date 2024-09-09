@@ -1,6 +1,10 @@
 import BaseAPI from './BaseAPI.ts';
 import {
-    ChatsMessagesTokenResponseType, ChatsResponseType, CreateChatRequestType, CreateChatResponseType,
+    ChatsMessagesTokenResponseType,
+    ChatsResponseType,
+    ChatUsersResponseType,
+    CreateChatRequestType,
+    CreateChatResponseType,
 } from './types.ts';
 import ResourcesAPI from './ResourcesAPI.ts';
 import router from '../services/router/Router.ts';
@@ -19,6 +23,21 @@ export class ChatsAPI extends BaseAPI {
                 return res;
             })
             .then(res => res.json() as ChatsResponseType[])
+            .catch(() => {
+                router.go('/error');
+            });
+    }
+
+    public getChatUsers(id: number) {
+        return this.http.get(`/chats/${id}/users`, {
+            headers: { 'Content-type': 'application/json' },
+        })
+            .then((res) => {
+                if (res.status === 401) router.go('/logout');
+
+                return res;
+            })
+            .then(res => res.json() as ChatUsersResponseType[])
             .catch(() => {
                 router.go('/error');
             });
@@ -60,6 +79,22 @@ export class ChatsAPI extends BaseAPI {
 
     public addUsers(chatId: number, users: number[]) {
         return this.http.put('/chats/users', {
+            headers: { 'Content-type': 'application/json' },
+            data:    { users, chatId },
+        })
+            .then((res) => {
+                if (res.status === 401) router.go('/logout');
+
+                return res;
+            })
+            .then(res => res.text())
+            .catch(() => {
+                router.go('/error');
+            });
+    }
+
+    public removeUsers(chatId: number, users: number[]) {
+        return this.http.delete('/chats/users', {
             headers: { 'Content-type': 'application/json' },
             data:    { users, chatId },
         })

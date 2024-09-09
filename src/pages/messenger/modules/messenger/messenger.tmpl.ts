@@ -18,6 +18,12 @@ export default function template() {
                             </button>
                             <div class="chat-info__dropdown more-dropdown">
                                 <span
+                                    class="more-dropdown__item"
+                                    events="{'click': 'editChat'}"
+                                >
+                                    Редактировать
+                                </span>
+                                <span
                                     class="more-dropdown__item more-dropdown__item--delete"
                                     events="{'click': 'deleteChat'}"
                                 >

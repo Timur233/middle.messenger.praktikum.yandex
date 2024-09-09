@@ -17,6 +17,10 @@ import Searchbar from './modules/chat-list/components/searchbar/searchbar.ts';
 import Messenger, { MessageItemType } from './modules/messenger/messenger.ts';
 import PageLoader from '../../components/page-loader/page-loader.ts';
 import Avatar from './components/avatar/avatar.ts';
+import ChangeAvatar from '../../components/change-avatar/change-avatar.ts';
+import ChatEditor from './modules/chat-editor/chat-editor.ts';
+import FormGroup from '../../components/form-group/form-group.ts';
+import UserFinder from './modules/chat-editor/components/user-finder/user-finder.ts';
 import modal from '../../components/modal/modal.ts';
 import Button from '../../components/button/button.ts';
 
@@ -52,17 +56,28 @@ export default class PageMessenger extends Page {
 
                             store.setState('chatList', chats);
 
-                            searchBar.classList.remove('searchbar--loading');
-                            searchbarComponent.getContent('input').focus();
+                            setTimeout(() => {
+                                searchBar.classList.remove('searchbar--loading');
+                                searchbarComponent.getContent('input').focus();
+                            }, 200);
                         });
                 }, 250),
             },
         });
         const chatListComponent: ChatList = new ChatList({
-            title:     'Чаты',
-            searchBar: searchbarComponent,
-            chats:     [],
-            methods:   {
+            title:        'Чаты',
+            searchBar:    searchbarComponent,
+            chats:        [],
+            createButton: new Button({
+                classList: 'button--primary chats__create-btn',
+                text:      'Создать чат',
+                methods:   {
+                    onClick: () => {
+                        PageMessenger.upsertChatModal.call(this);
+                    },
+                },
+            }),
+            methods: {
                 openProfilePage: (e: Event) => {
                     e.preventDefault();
 
@@ -108,6 +123,11 @@ export default class PageMessenger extends Page {
                         dropdown.classList.add('more-dropdown--show');
                         document.addEventListener('click', removeHandler);
                     }
+                },
+                editChat: () => {
+                    const activeChatId = store.getState('activeChatId') as number;
+
+                    PageMessenger.upsertChatModal.call(this, activeChatId);
                 },
                 deleteChat: () => {
                     modal.setProps({
@@ -339,6 +359,199 @@ export default class PageMessenger extends Page {
         clearInterval(PageMessenger.updateListInterval as number);
     }
 
+    static upsertChatModal(chatId: number | undefined | null = null, newChatTitle = '', chatUsers: {
+        id: number,
+        login: string,
+        isAdmin: boolean
+    }[] = []) {
+        const chatList = store.getState('chatList') as ChatDataType[];
+        const targetChat = chatList.find(i => i.id === chatId) as ChatDataType;
+        let chatNewAvatar: File | null = null;
+        let usersForAddList: number[] = chatUsers.map(i => Number(i.id));
+        const usersForRemoveList: number[] = [];
+        const chatEditor = new ChatEditor({
+            methods: {
+                onChangeAvatar: (e: Event) => {
+                    const input = e.target as HTMLInputElement;
+                    const file: File | null = input.files?.[0] || null;
+
+                    if (file) {
+                        const reader = new FileReader();
+
+                        reader.onload = (loadEvent: ProgressEvent<FileReader>) => {
+                            // eslint-disable-next-line no-use-before-define
+                            changeAvatar.setProps({ image: loadEvent.target?.result });
+                        };
+                        reader.readAsDataURL(file);
+                        chatNewAvatar = file;
+                    }
+                },
+            },
+        });
+        const changeAvatar = new ChangeAvatar({
+            classList: 'chat-avatar',
+            label:     'Поменять аватар',
+            image:     targetChat?.avatarLink || '/images/avatar-placeholder.jpeg',
+            title:     targetChat?.chatName || 'Аватар чата',
+            methods:   {
+                onClick: () => {
+                    const avatarInput = chatEditor.getContent('input') as HTMLInputElement;
+
+                    avatarInput.click();
+                },
+            },
+        });
+        const titleField = new FormGroup({
+            label:       'Заголовок чата',
+            placeholder: 'Введите название чата',
+            value:       newChatTitle || targetChat?.chatName,
+        });
+        const userFinder = new UserFinder({
+            users:   chatUsers,
+            methods: {
+                searchUsers: debounce((e: Event) => {
+                    const searchInput = e.target as HTMLInputElement;
+
+                    if (searchInput.value) {
+                        userFinder.getContent().classList.add('user-finder--loading');
+                        PageMessenger.searchUsers(searchInput.value)
+                            .then((users) => {
+                                userFinder.setProps({ usersResult: users, searchInputValue: searchInput.value });
+                                userFinder.getContent().classList.remove('user-finder--loading');
+
+                                setTimeout(() => {
+                                    const input = userFinder.getContent('.user-finder-input') as HTMLInputElement;
+
+                                    input.focus();
+                                    input.setSelectionRange(input.value.length, input.value.length);
+                                }, 200);
+                            });
+                    } else {
+                        userFinder.setProps({ usersResult: [], searchInputValue: '' });
+                    }
+                }, 250),
+                selectUser: (e: Event) => {
+                    const item = e.target as HTMLElement;
+                    const selectedUsers = userFinder.props?.users as {
+                        login: string,
+                        id: number,
+                        isAdmin?: boolean
+                    }[] || [];
+
+                    if (!selectedUsers.find(i => i.login === item.dataset?.login)) {
+                        userFinder.setProps({ usersResult: [], searchInputValue: '' });
+                        userFinder.setProps({
+                            users: [...selectedUsers, {
+                                id:      Number(item.dataset?.userId),
+                                login:   item.dataset?.login || '',
+                                isAdmin: false,
+                            }],
+                        });
+                        usersForAddList.push(Number(item.dataset?.userId));
+                    }
+                },
+                removeUser: (e: Event) => {
+                    const target = e.target as HTMLElement;
+                    const item = target.closest('button') as HTMLElement;
+                    const selectedUsers = userFinder.props?.users as { login: string, id: number }[] || [];
+
+                    if (item.dataset?.userId) {
+                        userFinder.setProps({ users: selectedUsers.filter(i => i.id !== Number(item.dataset.userId)) });
+                        usersForAddList = usersForAddList.filter(i => i !== Number(item.dataset?.userId));
+
+                        if (!usersForAddList.find(i => i === Number(item.dataset?.userId))) {
+                            usersForRemoveList.push(Number(item.dataset?.userId));
+                        }
+                    }
+                },
+            },
+        });
+
+        chatEditor.setProps({
+            avatar: changeAvatar,
+            titleField,
+            userFinder,
+        });
+
+        if (chatId) {
+            titleField.hide();
+
+            ChatsAPI
+                .getChatUsers(chatId)
+                .then((res) => {
+                    if (res && Array.isArray(res)) {
+                        userFinder.setProps({
+                            users: res.map(i => ({
+                                id:      i.id,
+                                login:   i.login,
+                                isAdmin: i.role === 'admin',
+                            })),
+                        });
+                    }
+                });
+        }
+
+        modal.setProps({
+            title:   chatId ? 'Редактировать чат' : 'Cоздать чат',
+            content: chatEditor,
+            buttons: [
+                new Button({
+                    text:      'Cохранить',
+                    classList: 'button--primary',
+                    methods:   {
+                        onClick: async () => {
+                            const chatTitle = titleField.getValue();
+                            const users = userFinder?.props?.users as { login: string, id: number }[] || [];
+
+                            if (!chatTitle) {
+                                titleField.setProps({ hasError: true });
+
+                                return;
+                            }
+
+                            this.showLoader();
+                            modal.hide();
+
+                            if (chatId) {
+                                if (usersForAddList.length > 0) {
+                                    await ChatsAPI.addUsers(chatId, usersForAddList);
+                                }
+
+                                if (usersForRemoveList.length > 0) {
+                                    await ChatsAPI.removeUsers(chatId, usersForRemoveList);
+                                }
+
+                                if (chatNewAvatar) {
+                                    const data = new FormData();
+
+                                    data.append('avatar', chatNewAvatar);
+                                    data.append('chatId', chatId.toString());
+
+                                    await ChatsAPI.addAvatar(data);
+                                }
+                            } else {
+                                chatId = await PageMessenger.createChat(chatTitle, users.map(i => i.id), chatNewAvatar);
+                            }
+
+                            PageMessenger.getChatList()
+                                .then((chatsData: ChatDataType[]) => {
+                                    store.setState('activeChatId', chatId);
+                                    store.setState('chatList', chatsData);
+                                    store.setState('userList', []);
+
+                                    this.hideLoader();
+
+                                    PageMessenger.openChat(chatId as number);
+                                });
+                        },
+                    },
+                }),
+            ],
+        });
+
+        modal.show();
+    }
+
     static openChat(chatId: number) {
         const chatList = store.getState('chatList') as ChatDataType[];
         const activeChat = chatList.find(i => i.id === chatId);
@@ -379,33 +592,19 @@ export default class PageMessenger extends Page {
             if (componentId && typeof componentId === 'string') {
                 const targetUser =  chatListComponent.getChild(componentId);
                 const userId = targetUser?.props?.id as number || null;
-                const userName = targetUser?.props?.chatName as string || null;
-                const activeUser = store.getState('userInfo') as UserResponseType;
-                let title = null;
+                const userName = targetUser?.props?.chatName as string || '';
 
-                const users = userId ? [userId] : [];
-                const avatar =  targetUser?.props?.userAvatar as string || '';
+                const users = [{
+                    id:      userId,
+                    login:   userName,
+                    isAdmin: false,
+                }] as {
+                    id: number,
+                    login: string,
+                    isAdmin: boolean
+                }[];
 
-                if (userName && userId) {
-                    title = `face2face:${userId}|${userName}||${activeUser.id}|${activeUser.login}`;
-                }
-
-                if (title) {
-                    this?.showLoader();
-
-                    PageMessenger.createChat(title, users, avatar)
-                        .then((id) => {
-                            PageMessenger.getChatList()
-                                .then((chatsData: ChatDataType[]) => {
-                                    store.setState('activeChatId', id);
-                                    store.setState('chatList', chatsData);
-                                    store.setState('userList', []);
-
-                                    PageMessenger.openChat(id as number);
-                                    this.hideLoader();
-                                });
-                        });
-                }
+                PageMessenger.upsertChatModal.call(this, null, userName, users);
             }
         }
     }
@@ -468,7 +667,7 @@ export default class PageMessenger extends Page {
         return ChatsAPI.uploadImage(data);
     }
 
-    static async createChat(title: string, users: number[] = [], avatarLink: string = '') {
+    static async createChat(title: string, users: number[] = [], avatar: File | null = null) {
         const chatId = await ChatsAPI.create({ title })
             .then((res) => {
                 const id: number | undefined = res?.id;
@@ -480,12 +679,10 @@ export default class PageMessenger extends Page {
             await ChatsAPI.addUsers(chatId, users);
         }
 
-        if (chatId && avatarLink !== '') {
-            const image = await ChatsAPI.downloadAvatar(avatarLink);
-            const imageBlob = await image.blob();
+        if (chatId && avatar) {
             const data = new FormData();
 
-            data.append('avatar', imageBlob, 'image.jpg');
+            data.append('avatar', avatar);
             data.append('chatId', chatId.toString());
 
             await ChatsAPI.addAvatar(data);
@@ -505,7 +702,7 @@ export default class PageMessenger extends Page {
                     return chats.map((item: ChatsResponseType) => ({
                         id:             item.id,
                         isActive:       !!(activeChat && activeChat === item.id),
-                        chatName:       typeof item.title === 'string' ? PageMessenger.parseChatName(item.title) : '',
+                        chatName:       typeof item.title === 'string' ? item.title : '',
                         messagePreview: item.last_message?.content || '',
                         unreadMessages: item.unread_count,
                         date:           item.last_message?.time ? dateFormatter(item.last_message.time) : '',
@@ -562,25 +759,10 @@ export default class PageMessenger extends Page {
         return [];
     }
 
-    static parseChatName(name: string): string {
-        const activeUser = store.getState('userInfo') as UserResponseType;
-
-        if (name.includes('face2face:')) {
-            const usersInChat: string[] = name.replace('face2face:', '').split('||');
-            const usersData: { id: number, login: string }[] = usersInChat.map((userString: string) => ({
-                id:    Number(userString.split('|')[0]),
-                login: userString.split('|')[1],
-            }));
-            const companion: { id: number, login: string } | undefined = usersData
-                .find((user: { id: number, login: string }) => user.id !== activeUser.id);
-
-            if (companion) {
-                return companion.login;
-            }
-        }
-
-        return name;
-    }
+    // eslint-disable-next-line no-unused-vars
+    // static upsertChatModal(_chatID = null, _title = '', _users = []) {
+    //     throw new Error('Method not implemented.');
+    // }
 
     static showLoader() {
         throw new Error('Method not implemented.');

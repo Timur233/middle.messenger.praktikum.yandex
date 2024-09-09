@@ -136,7 +136,7 @@ export default class PageSettings extends Page {
         store.on(StoreEvents.Updated, () => {
             const userInfo = store.getState('userInfo') as UserResponseType;
             const avatarData = store.getState('userAvatar') as {
-                avatar: string,
+                image: string,
                 title: string
             };
 
