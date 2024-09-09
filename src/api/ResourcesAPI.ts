@@ -4,12 +4,13 @@ import router from '../services/router/Router.ts';
 
 export class ResourcesAPI extends BaseAPI {
     public download(path: string) {
-        return this.http.get(`/resources${path}`, { responseType: 'blob' });
+        return this.http.get(`/resources${path}`, { responseType: 'blob', timeout: 20000 });
     }
 
     public upload(formData: FormData) {
         return this.http.post('/resources', {
-            data: formData,
+            data:    formData,
+            timeout: 20000,
         })
             .then((res) => {
                 if (res.status === 401) router.go('/logout');
