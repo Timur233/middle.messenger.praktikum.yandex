@@ -1,0 +1,91 @@
+@import '../../../../vars';
+
+.user-finder {
+    &__title {
+        font-size: 12px;
+        font-weight: 400;
+        color: var(--label-color);
+        margin-bottom: 8px;
+    }
+
+    &__input {
+        display: block;
+        position: relative;
+        margin-bottom: 8px;
+    }
+
+    &__spiner {
+        display: none;
+        width: 28px;
+        position: absolute;
+        right: 8px;
+        top: 8px;
+    }
+
+    &__list {
+        margin-top: 16px;
+    }
+
+    &--loading {
+        /* stylelint-disable-next-line selector-class-pattern */
+        .user-finder__spiner {
+            display: block;
+        }
+    }
+}
+
+.user-finder-input {
+    width: 100%;
+}
+
+.search-users {
+    display: flex;
+    flex-direction: column;
+    gap: 4;
+    max-height: 100px;
+    overflow: auto;
+
+    @include scroll-settings;
+
+    &__item {
+        cursor: pointer;
+
+        // font-size: 12px;
+        padding: 8px 4px;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        &:hover {
+            background-color: $search-users-hover;
+        }
+    }
+}
+
+.users-finder-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+
+    &__item {
+        display: flex;
+        align-items: center;
+
+        // font-size: 12px;
+        padding: 4px 8px;
+        background-color: $light-gray;
+        border-radius: 2px;
+    }
+
+    &__remove {
+        cursor: pointer;
+        padding-right: 0;
+        /* stylelint-disable-next-line scss/selector-no-redundant-nesting-selector */
+        & > svg {
+            transform: scale(.7);
+            width: 15px;
+            height: 15px;
+        }
+    }
+}

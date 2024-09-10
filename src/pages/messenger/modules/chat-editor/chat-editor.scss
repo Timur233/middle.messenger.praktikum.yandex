@@ -1,0 +1,12 @@
+.chat-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 360px;
+
+    &__avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
