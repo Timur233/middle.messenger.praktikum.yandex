@@ -1,7 +1,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/2a668cd5-3654-4c56-a540-19a633e37d11/deploy-status)](https://app.netlify.com/sites/praktikum-timur233/deploys)
 
 
-## Проектная работа 3-й спринт
+## Проектная работа 4-й спринт
 
 Ссылка на развернутое приложение: https://praktikum-timur233.netlify.app/
 
