@@ -1,4 +1,4 @@
-import config from './cofing.ts';
+import baseConfig from './cofing.ts';
 import HTTPResponse from './HTTPResponse.ts';
 
 enum METHODS {
@@ -30,7 +30,13 @@ type HTTPMethod = (url: string, options?: Options) => Promise<HTTPResponse>
 class HTTPTransport {
     METHODS = METHODS;
 
-    APP_URL: string = config.APP_URL;
+    APP_URL: string = baseConfig.APP_URL;
+
+    constructor(config?: { APP_URL: string }) {
+        if (config) {
+            this.APP_URL = config.APP_URL;
+        }
+    }
 
     get: HTTPMethod = (url, options = {}) => this
         .httpRequest(this.APP_URL + url, { ...options, method: METHODS.GET }, options?.timeout);
