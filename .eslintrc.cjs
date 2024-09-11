@@ -6,6 +6,13 @@ module.exports = {
     env:     {
         browser: true,
     },
+    globals: {
+        it:         'readonly',
+        describe:   'readonly',
+        expect:     'readonly',
+        beforeEach: 'readonly',
+        afterEach:  'readonly',
+    },
     rules: {
         'max-len':    ['error', 120, 4, { ignoreComments: true }],
         'func-names': ['error', 'never'],
