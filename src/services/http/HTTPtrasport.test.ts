@@ -1,7 +1,7 @@
 import { expect, use } from 'chai';
 import sinonChai from 'sinon-chai';
 import { createSandbox, SinonStub } from 'sinon';
-import HTTPTransport from './HTTPTransport.ts';
+import HTTPTransport from './HTTPtransport.ts';
 
 describe('HTTP Transport', () => {
     use(sinonChai);
