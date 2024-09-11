@@ -29,6 +29,7 @@
     "prepare": "husky install",
     "build": "vite build",
     "start": "vite build && vite preview --port 3000"
+
   },
   "devDependencies": {
     "@types/chai": "^4.3.19",
