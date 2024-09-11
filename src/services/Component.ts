@@ -17,6 +17,7 @@ export default class Component <ComponentData extends ComponentDataType = {}> {
         FLOWrender: 'flow:render',
         FLOW_BR:    'flow:component-before-render',
         FLOW_AR:    'flow:component-after-render',
+        tedt:       'test',
     };
 
     id: string;
